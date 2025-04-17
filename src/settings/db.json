@@ -1,0 +1,8 @@
+{
+    "db": {
+    "logged": 1, "host": "localhost",
+    "database": "financie",
+    "user": "postgres",
+    "password": "32372403"
+    }
+}
