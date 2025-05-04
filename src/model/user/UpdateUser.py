@@ -10,7 +10,7 @@ def db_create_user(user : object): # Cria um usuário usando as informações do
     conn = database.make_connection
     cur = conn.cursor()
 
-    cur.execute("UPDATE table_users SET fullname = %s, user_cpf = %s, email = %s, password = %s WHERE id = %s;", (user.ullname, user.cpf, user.email, user.password, user.uuid))
+    cur.execute("UPDATE table_users SET fullname = %s, user_cpf = %s, email = %s, password = %s WHERE id = %s;", (user.fullname, user.cpf, user.email, user.password, user.uuid))
     conn.commit()
 
     cur.close()
