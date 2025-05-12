@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 
+from colorama import Fore, Style
+
 import logging
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
@@ -24,32 +26,85 @@ class Db_user:
 
             self.session.add(self.user.to_table)
             self.session.commit()
+
+            print(Fore.GREEN + Style.BRIGHT + "User created successfully!" + Style.RESET_ALL)
+
             return True
+        
         
         except Exception as e:
 
-            logging.error(str(e.orig))
+            logging.error(str(e))
+
+            print(Fore.RED + Style.BRIGHT + "Error creating user!" + Style.RESET_ALL)
+
             return False
         
         finally:
-            self.session.close()
-            self.engine.dispose()
+            self.session.close() ; self.engine.dispose()
 
-    def read(self):
+    def serch_by_id(self):
 
         try:
 
             user = self.session.query(table_users).filter_by(id=self.user.uuid).first()
+
+            print(Fore.GREEN + Style.BRIGHT + "User read successfully!" + Style.RESET_ALL)
+
             return user
-        
+
+
         except Exception as e:
 
-            logging.error(str(e.orig))
+            logging.error(str(e))
+
+            print(Fore.RED + Style.BRIGHT + "Error reading user!" + Style.RESET_ALL)
+
             return False
         
+
+        
         finally:
-            self.session.close()
-            self.engine.dispose()
+            self.session.close() ; self.engine.dispose()
+
+    def serch_by_email(self):
+            
+            try:
+    
+                search = self.session.query(table_users).filter_by(email=self.user.email).first()
+    
+                print(Fore.GREEN + Style.BRIGHT + "User read successfully!" + Style.RESET_ALL)
+
+    
+                user = User(
+
+                    fullname=search.fullname,
+                    cpf=search.cpf,
+                    phone=search.phone,
+                    email=search.email,
+                    password=search.password,
+                    birthday=search.birthday
+                    # lgpd_consent=search.lgpd_consent,
+                    # created_at=search.created_at,
+                    # updated_at=search.updated_at,
+                    # deleted_at=search.deleted_at
+                    )
+
+
+                return user
+    
+    
+            except Exception as e:
+    
+                logging.error(str(e))
+    
+                print(Fore.RED + Style.BRIGHT + "Error reading user!" + Style.RESET_ALL)
+    
+                return False
+            
+            
+            finally:
+                self.session.close() ; self.engine.dispose()            
    
     def update(self):
 
@@ -65,16 +120,21 @@ class Db_user:
             user.updated_at = datetime.now()
 
             self.session.commit()
+
+            print(Fore.GREEN + Style.BRIGHT + "User updated successfully!" + Style.RESET_ALL)
+
             return True
         
         except Exception as e:
 
             logging.error(str(e.orig))
+
+            print(Fore.RED + Style.BRIGHT + "Error updating user!" + Style.RESET_ALL)
+
             return False
         
         finally:
-            self.session.close()
-            self.engine.dispose()
+            self.session.close() ; self.engine.dispose()
 
     def delete(self):
 
@@ -84,13 +144,18 @@ class Db_user:
             user.deleted_at = datetime.now()
 
             self.session.commit()
+
+            print(Fore.GREEN + Style.BRIGHT + "User deleted successfully!" + Style.RESET_ALL)
+
             return True
         
         except Exception as e:
 
             logging.error(str(e.orig))
+
+            print(Fore.RED + Style.BRIGHT + "Error deleting user!" + Style.RESET_ALL)
+
             return False
         
         finally:
-            self.session.close()
-            self.engine.dispose()
+            self.session.close() ; self.engine.dispose()

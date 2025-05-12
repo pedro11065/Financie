@@ -1,7 +1,7 @@
-
 from sqlalchemy import String
 from sqlalchemy import Date
-from sqlalchemy import Integer
+
+from sqlalchemy import LargeBinary
 
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -19,23 +19,30 @@ from sqlalchemy.dialects.postgresql import UUID
 
 class User:
 
+    lgpd_consent : bool
+    created_at : datetime
+    updated_at : datetime 
+    deleted_at : datetime
+
     def __init__(self, fullname, cpf, phone, email, password, birthday):
 
-        self.uuid : str = str(uuid.uuid4())
+        self.uuid : str = None
         self.fullname : str = fullname
-        self.cpf : str = Crypt().encrypt(cpf)
-        self.phone : str = Crypt().encrypt(phone)
+        self.cpf : str = Crypt().decrypt(cpf)
+        self.phone : str = Crypt().decrypt(phone)
         self.email : str = email
-        self.password : str = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+        self.password : str = password
         self.birthday : str = birthday
 
+
         self.to_table = table_users(
-            id=self.uuid,
+
+            id=str(uuid.uuid4()),
             fullname=self.fullname,
-            cpf=self.cpf,
-            phone=self.phone,
+            cpf=Crypt().decrypt(self.cpf), # .encrypt(self.cpf)
+            phone=Crypt().decrypt(self.phone), # .encrypt(self.phone)
             email=self.email,
-            password=self.password,
+            password=bcrypt.hashpw(self.password.encode(), bcrypt.gensalt()).decode(),
             birthday=self.birthday,
             lgpd_consent=True,
             created_at=datetime.now(),
@@ -52,8 +59,8 @@ class table_users(Base):
     email: Mapped[str] = mapped_column(String(150), nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String(60), nullable=False)
     birthday: Mapped[str] = mapped_column(Date, nullable=False)
-    cpf: Mapped[bytes] = mapped_column(String(256), nullable=False, unique=True)
-    phone: Mapped[bytes] = mapped_column(String(256), nullable=False, unique=True)
+    cpf: Mapped[bytes] = mapped_column(LargeBinary, nullable=False, unique=True)
+    phone: Mapped[bytes] = mapped_column(LargeBinary, nullable=False, unique=False)
     lgpd_consent: Mapped[bool] = mapped_column(nullable=False, default=True)
     created_at: Mapped[datetime] = mapped_column(Date, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(Date, nullable=False)

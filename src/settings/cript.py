@@ -11,7 +11,16 @@ class Crypt:
             return file.read()
 
     def encrypt(self, data: str) -> bytes:
-        return self.fernet.encrypt(data.encode())
 
-    def decrypt(self, encrypted_data: bytes) -> str:
-        return self.fernet.decrypt(encrypted_data).decode()
+        if isinstance(data, str):
+            return self.fernet.encrypt(data.encode())
+        
+        elif isinstance(data, bytes):
+            return self.fernet.encrypt(data)
+        return data
+
+    def decrypt(self, encrypted_data) -> str:
+        
+        if isinstance(encrypted_data, bytes):
+            return self.fernet.decrypt(encrypted_data).decode()
+        return encrypted_data

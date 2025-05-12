@@ -1,6 +1,8 @@
 from src.model.user.db_user import Db_user
 from src.model.user.user import User
 
+import bcrypt, uuid
+
 user = User(fullname="Pedro Henrique", 
             cpf="50774811803", 
             email="pedrohenriquesilvaquixabeira@gmail.com",
@@ -9,4 +11,15 @@ user = User(fullname="Pedro Henrique",
             birthday="2006-03-13")
 
 db_user = Db_user(user)
-db_user.create()
+#db_user.create()
+
+user = db_user.serch_by_email()
+print(user.fullname)
+print(user.email)
+
+print(f'\n{user.password}\n')
+
+password = input("Digite sua senha: ")
+print(bcrypt.checkpw(password.encode(), user.password.encode()))
+
+
