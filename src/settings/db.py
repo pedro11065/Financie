@@ -1,6 +1,9 @@
 import os, json
 from sqlalchemy.orm import DeclarativeBase
 
+import logging
+logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
+
 class Db_connect:
 
     def __init__(self):
