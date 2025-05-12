@@ -15,10 +15,15 @@ table_log_all: log_time, log_description
 */
 CREATE TABLE users 
 (id UUID primary key, /*UUID*/
-fullname varchar(255), 
-email varchar(255) unique, 
-password varchar(225), 
+fullname varchar(150), 
+email varchar(150) unique, 
+password varchar(60), 
 birthday varchar(10),
-cpf varchar(11) unique);
+cpf BYTEA unique,
+phone BYTEA unique,
+lgpd_consent boolean default false,
+created_at timestamp,
+updated_at timestamp ,
+deleted_at timestamp) ;
 
 

@@ -1,13 +1,20 @@
-import os, json, psycopg2
+import os, json
+from sqlalchemy.orm import DeclarativeBase
 
 class Db_connect:
 
-    check: bool
+    def __init__(self):
 
-    host:str
-    database :str
-    user: str
-    password : str
+        self.check = False
+        self.host = ""
+        self.database = ""
+        self.user = ""
+        self.password = ""
+        self.engine = ""
+
+        self.read_db_info()
+
+
 
     def read_db_info(self):
 
@@ -24,25 +31,13 @@ class Db_connect:
             self.password = config['db']['password']
 
             self.check = True
+
+            #postgresql://user:password@localhost:5432/dbname
+            self.engine=f"postgresql://{self.user}:{self.password}@{self.host}:5432/{self.database}"
         
         except Exception as error:
             print(f"Erro: {error}")
             self.check = False
         
-    def make_connection(self):
-
-        self.read_db_info(self)
-        
-        if self.check:
-            conn = psycopg2.connect(
-            host = self.host,
-            database = self.database,
-            user = self.user,
-            password = self.password
-            )
-
-            return conn
-
-        else:
-
-            return False
+class Base(DeclarativeBase):
+    pass
