@@ -20,7 +20,12 @@ class Crypt:
         return data
 
     def decrypt(self, encrypted_data) -> str:
-        
+
         if isinstance(encrypted_data, bytes):
             return self.fernet.decrypt(encrypted_data).decode()
         return encrypted_data
+    
+
+    
+
+    #bcrypt.checkpw(input_password.encode(), stored_hash.encode())

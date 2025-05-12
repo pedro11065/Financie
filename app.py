@@ -17,9 +17,3 @@ user = db_user.serch_by_email()
 print(user.fullname)
 print(user.email)
 
-print(f'\n{user.password}\n')
-
-password = input("Digite sua senha: ")
-print(bcrypt.checkpw(password.encode(), user.password.encode()))
-
-
