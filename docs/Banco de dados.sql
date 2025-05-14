@@ -9,7 +9,7 @@ cpf BYTEA unique,
 phone BYTEA unique,
 lgpd_consent boolean default false,
 created_at timestamp,
-updated_at timestamp ,
-deleted_at timestamp) ;
+updated_at timestamp,
+deleted_at timestamp);
 
 

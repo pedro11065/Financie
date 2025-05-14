@@ -8,7 +8,6 @@ from sqlalchemy.orm import mapped_column
 
 import bcrypt, uuid
 
-from psycopg2 import Binary
 from datetime import datetime
 
 from src.settings.cript import Crypt
@@ -28,19 +27,20 @@ class User:
 
         self.uuid : str = None
         self.fullname : str = fullname
-        self.cpf : str = Crypt().decrypt(cpf)
-        self.phone : str = Crypt().decrypt(phone)
+        self.cpf : str = cpf
+        self.phone : str = phone
         self.email : str = email
         self.password : str = password
         self.birthday : str = birthday
 
+    def self_to_table(self):
 
-        self.to_table = table_users(
+        data = table_users(
 
             id=str(uuid.uuid4()),
             fullname=self.fullname,
-            cpf=Crypt().decrypt(self.cpf), # .encrypt(self.cpf)
-            phone=Crypt().decrypt(self.phone), # .encrypt(self.phone)
+            cpf=self.cpf,  # Directly store the binary data
+            phone=self.phone,  # Directly store the binary data
             email=self.email,
             password=bcrypt.hashpw(self.password.encode(), bcrypt.gensalt()).decode(),
             birthday=self.birthday,
@@ -49,6 +49,18 @@ class User:
             updated_at=datetime.now(),
             deleted_at=None
         )
+
+        return data
+
+    def encrypt(self):
+        self.cpf = Crypt().encrypt(self.cpf)
+        self.phone = Crypt().encrypt(self.phone)
+
+    def decrypt(self):
+        self.cpf = Crypt().decrypt(self.cpf)
+        self.phone = Crypt().decrypt(self.phone)
+    
+
         
 class table_users(Base):
 
@@ -66,5 +78,5 @@ class table_users(Base):
     updated_at: Mapped[datetime] = mapped_column(Date, nullable=False)
     deleted_at: Mapped[datetime] = mapped_column(Date, nullable=True)
 
-    def __repr__(self):
-        return f'User(id={self.id!r}, fullname={self.fullname!r}, email={self.email!r}, password={self.password!r}, birthday={self.birthday!r}, cpf={self.cpf!r}, phone={self.phone!r}, lgpd_consent={self.lgpd_consent!r}, created_at={self.created_at!r}, updated_at={self.updated_at!r}, deleted_at={self.deleted_at!r})'
+    #def __repr__(self):
+     #   return f'User(id={self.id!r}, fullname={self.fullname!r}, email={self.email!r}, password={self.password!r}, birthday={self.birthday!r}, cpf={self.cpf!r}, phone={self.phone!r}, lgpd_consent={self.lgpd_consent!r}, created_at={self.created_at!r}, updated_at={self.updated_at!r}, deleted_at={self.deleted_at!r})'

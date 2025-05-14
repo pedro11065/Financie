@@ -1,9 +1,10 @@
 from cryptography.fernet import Fernet
 
 class Crypt:
-    def __init__(self, key_path: str = "src/settings/key.key"):
+    def __init__(self, 
+        key_path: str = r"C:\Users\phsq\Documents\projetos\Financie\src\settings\key.key"):
         self.key = self.load_key(key_path)
-        self.fernet = Fernet(self.key)
+        self.key = Fernet(self.key)
 
     @staticmethod
     def load_key(file_path: str) -> bytes:
@@ -13,16 +14,16 @@ class Crypt:
     def encrypt(self, data: str) -> bytes:
 
         if isinstance(data, str):
-            return self.fernet.encrypt(data.encode())
+            return self.key.encrypt(data.encode())
         
         elif isinstance(data, bytes):
-            return self.fernet.encrypt(data)
+            return self.key.encrypt(data)
         return data
 
     def decrypt(self, encrypted_data) -> str:
 
         if isinstance(encrypted_data, bytes):
-            return self.fernet.decrypt(encrypted_data).decode()
+            return self.key.decrypt(encrypted_data).decode()
         return encrypted_data
     
 
