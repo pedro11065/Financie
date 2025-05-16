@@ -1,18 +1,23 @@
-from src.model.user.db_user import Db_user
+from src.model.db import Db
 from src.model.user.user import User
 
 import bcrypt, uuid
 
-search = User(fullname="Pedro Henrique", 
+data = User(fullname="Pedro Henrique", 
             cpf="50774811803", 
             email="pedrohenriquesilvaquixabeira@gmail.com",
             phone="13974256075",
             password="32372403", 
             birthday="2006-03-13")
 
-db_user = Db_user(search)
-#db_user.create()
-#user = db_user.search_by_email()
-#print(user.__dict__)
+
+type = "user"
+db = Db(type, data)
+
+db.users.create.user()
+
+user = db.users.search.by_email()
+print(user.__dict__)
+
 
 
