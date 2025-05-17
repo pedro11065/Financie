@@ -2,7 +2,7 @@ from src.model.user.users import Users
 
 class Db:
 
-    def __init__(self, type, data):
+    def __init__(self, type):
         
-        if type == 'user':
-            self.users : object = Users(data)
+        if type == 'users':
+            self.users : object = Users()

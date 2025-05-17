@@ -1,7 +1,6 @@
 from src.model.db import Db
 from src.model.user.user import User
 
-import bcrypt, uuid
 
 data = User(fullname="Pedro Henrique", 
             cpf="50774811803", 
@@ -11,12 +10,14 @@ data = User(fullname="Pedro Henrique",
             birthday="2006-03-13")
 
 
-type = "user"
-db = Db(type, data)
+table = "users"
+db = Db(table)
 
-db.users.create.user()
+#db.users.create.user()
 
-user = db.users.search.by_email()
+user = db.users.search.by_email(data)
+
+#update = db.users.update.user()
 print(user.__dict__)
 
 

@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
+from sqlalchemy.exc import SQLAlchemyError  # Import para capturar erros do SQLAlchemy
 
 from colorama import Fore, Style
 
@@ -8,6 +9,7 @@ logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 from src.model.user.user import * 
 from src.settings.db import Db_connect
+from src.model.user.user import table_users  # Certifique-se de importar table_users corretamente
 
 
 class Users:
@@ -21,6 +23,7 @@ class Users:
 
         self.search = self.Search(self)
         self.create = self.Create(self, self.user)
+        self.update = self.Update(self)
 
 
     class Create:
@@ -136,30 +139,42 @@ class Users:
                 self.parent.session.close() ; self.parent.engine.dispose()            
 
 
-    def update(self):
+    class Update:
 
-        try:
+        def __init__(self, parent):
+            self.parent = parent
 
-            self.user.encrypt()
+        def user(self):
 
-            self.session.query(table_users).filter_by(id=self.user.uuid).first()
-            self.session._update_impl(self.user.to_table)
-            self.session.commit()
+            try:
+                self.parent.user.encrypt()
 
-            print(Fore.GREEN + Style.BRIGHT + "User updated successfully!" + Style.RESET_ALL)
+                # Busque o registro do usuário no banco de dados
+                user_record = self.parent.session.query(table_users).filter_by(id=self.parent.user.uuid).first()
+                if not user_record:
+                    print(Fore.RED + Style.BRIGHT + "User not found!" + Style.RESET_ALL)
+                    return False
 
-            return True
-        
-        except Exception as e:
+                # Atualize os campos necessários
+                for key, value in self.parent.user.self_to_table().__dict__.items():
+                    if key != "_sa_instance_state":  # Ignore o atributo interno do SQLAlchemy
+                        setattr(user_record, key, value)
 
-            logging.error(str(e.orig))
+                self.parent.session.commit()
 
-            print(Fore.RED + Style.BRIGHT + "Error updating user!" + Style.RESET_ALL)
+                print(Fore.GREEN + Style.BRIGHT + "User updated successfully!" + Style.RESET_ALL)
 
-            return False
-        
-        finally:
-            self.session.close() ; self.engine.dispose()
+                return True
+            
+            except SQLAlchemyError as e:
+                logging.error(str(e))
+                print(Fore.RED + Style.BRIGHT + "Error updating user!" + Style.RESET_ALL)
+                print(e)
+
+                return False
+            
+            finally:
+                self.parent.session.close() ; self.parent.engine.dispose()
 
 
     def delete(self):
