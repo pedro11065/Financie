@@ -1,8 +1,10 @@
 from src.model.db import Db
 from src.model.user.user import User
 
+import os
 
-data = User(fullname="Pedro Henrique", 
+
+user = User(fullname="Pedro Henrique", 
             cpf="50774811803", 
             email="pedrohenriquesilvaquixabeira@gmail.com",
             phone="13974256075",
@@ -13,12 +15,24 @@ data = User(fullname="Pedro Henrique",
 table = "users"
 db = Db(table)
 
-#db.users.create.user()
+#db.users.create.user(user)
 
-user = db.users.search.by_email(data)
+user = db.users.search.by_email(user.email)
+os.system("pause")
 
-#update = db.users.update.user()
-print(user.__dict__)
+# user = db.users.search.by_id(user.id)
+# os.system("pause")
+
+
+id = user.id
+column = ""
+data = "Luiz Guilherme"
+
+
+update = db.users.update.user(id, column, data)
+print(update)
+
+
 
 
 

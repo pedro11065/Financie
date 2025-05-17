@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError  # Import para capturar erros do SQLAlchemy
+from sqlalchemy import update
 
 from colorama import Fore, Style
 
@@ -14,30 +15,28 @@ from src.model.user.user import table_users  # Certifique-se de importar table_u
 
 class Users:
 
-    def __init__(self, user):
+    def __init__(self):
 
-        self.user = user
         self.db = Db_connect()
         self.engine = create_engine(self.db.engine, echo=False)
         self.session = Session(self.engine)
 
         self.search = self.Search(self)
-        self.create = self.Create(self, self.user)
+        self.create = self.Create(self)
         self.update = self.Update(self)
 
 
     class Create:
 
-        def __init__(self, parent, user_data):        
+        def __init__(self, parent):        
             self.parent = parent
-            self.user_data = user_data
         
-        def user(self):
+        def user(self, user_data):
 
             try:
                 
                 self.parent.user.encrypt()
-                self.parent.session.add(self.user_data.self_to_table())
+                self.parent.session.add(user_data.self_to_table())
                 self.parent.session.commit()
 
                 print(Fore.GREEN + Style.BRIGHT + "User created successfully!" + Style.RESET_ALL)
@@ -62,27 +61,27 @@ class Users:
             # Establish a reference to the parent Db_user instance
             self.parent = parent
 
-        def by_id(self):
+        def by_id(self, id):
 
             try:
 
-                search = self.parent.session.query(table_users).filter_by(id=self.parent.user.uuid).first()
+                search = self.parent.session.query(table_users).filter_by(id=id).first()
 
                 print(Fore.GREEN + Style.BRIGHT + "User read successfully!" + Style.RESET_ALL)
 
                 user = User(
-
+                    id=str(search.id),
                     fullname=search.fullname,
                     cpf=search.cpf,
                     phone=search.phone,
                     email=search.email,
                     password=search.password,
-                    birthday=search.birthday
-                    # lgpd_consent=search.lgpd_consent,
-                    # created_at=search.created_at,
-                    # updated_at=search.updated_at,
-                    # deleted_at=search.deleted_at
-                    )
+                    birthday=search.birthday,
+                    lgpd_consent=search.lgpd_consent,
+                    created_at=search.created_at,
+                    updated_at=search.updated_at,
+                    deleted_at=search.deleted_at
+                )
                 
                 user.decrypt()
 
@@ -99,29 +98,27 @@ class Users:
             finally:
                 self.parent.session.close() ; self.parent.engine.dispose()
 
-        def by_email(self):
+        def by_email(self, email):
                 
             try:
 
-                search = self.parent.session.query(table_users).filter_by(email=self.parent.user.email).first()
+                search = self.parent.session.query(table_users).filter_by(email=email).first()
 
                 print(Fore.GREEN + Style.BRIGHT + "User search ended successfully!" + Style.RESET_ALL)
 
-
-                user:object = User(
-
+                user = User(
+                    id=str(search.id),
                     fullname=search.fullname,
                     cpf=search.cpf,
                     phone=search.phone,
                     email=search.email,
                     password=search.password,
-                    birthday=search.birthday
-                    # lgpd_consent=search.lgpd_consent,
-                    # created_at=search.created_at,
-                    # updated_at=search.updated_at,
-                    # deleted_at=search.deleted_at
-                    )
-
+                    birthday=search.birthday,
+                    lgpd_consent=search.lgpd_consent,
+                    created_at=search.created_at,
+                    updated_at=search.updated_at,
+                    deleted_at=search.deleted_at
+                )
 
                 user.decrypt()
 
@@ -144,37 +141,33 @@ class Users:
         def __init__(self, parent):
             self.parent = parent
 
-        def user(self):
+        def user(self, id, column, data):
 
             try:
-                self.parent.user.encrypt()
+                # Correctly reference the table_users table
+                stmt = (
+                    update(table_users)
+                    .where(table_users.id == id)
+                    .values({column: data})
+                )
 
-                # Busque o registro do usuário no banco de dados
-                user_record = self.parent.session.query(table_users).filter_by(id=self.parent.user.uuid).first()
-                if not user_record:
-                    print(Fore.RED + Style.BRIGHT + "User not found!" + Style.RESET_ALL)
-                    return False
-
-                # Atualize os campos necessários
-                for key, value in self.parent.user.self_to_table().__dict__.items():
-                    if key != "_sa_instance_state":  # Ignore o atributo interno do SQLAlchemy
-                        setattr(user_record, key, value)
-
+                self.parent.session.execute(stmt)  # Execute the update statement
                 self.parent.session.commit()
 
                 print(Fore.GREEN + Style.BRIGHT + "User updated successfully!" + Style.RESET_ALL)
 
                 return True
-            
+
             except SQLAlchemyError as e:
                 logging.error(str(e))
                 print(Fore.RED + Style.BRIGHT + "Error updating user!" + Style.RESET_ALL)
                 print(e)
 
                 return False
-            
+
             finally:
-                self.parent.session.close() ; self.parent.engine.dispose()
+                self.parent.session.close()
+                self.parent.engine.dispose()
 
 
     def delete(self):

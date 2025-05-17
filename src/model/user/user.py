@@ -18,20 +18,18 @@ from sqlalchemy.dialects.postgresql import UUID
 
 class User:
 
-    lgpd_consent : bool
-    created_at : datetime
-    updated_at : datetime 
-    deleted_at : datetime
-
-    def __init__(self, fullname, cpf, phone, email, password, birthday):
-
-        self.uuid : str = None
-        self.fullname : str = fullname
-        self.cpf : str = cpf
-        self.phone : str = phone
-        self.email : str = email
-        self.password : str = password
-        self.birthday : str = birthday
+    def __init__(self, fullname, cpf, phone, email, password, birthday, id=None, lgpd_consent=None, created_at=None, updated_at=None, deleted_at=None):
+        self.id: str = id
+        self.fullname: str = fullname
+        self.cpf: str = cpf
+        self.phone: str = phone
+        self.email: str = email
+        self.password: str = password
+        self.birthday: str = birthday
+        self.lgpd_consent: bool = lgpd_consent
+        self.created_at: datetime = created_at
+        self.updated_at: datetime = updated_at
+        self.deleted_at: datetime = deleted_at
 
     def self_to_table(self):
 

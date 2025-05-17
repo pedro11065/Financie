@@ -2,7 +2,7 @@ from cryptography.fernet import Fernet
 
 class Crypt:
     def __init__(self, 
-        key_path: str = r"C:\Users\phsq\Documents\projetos\Financie\src\settings\key.key"):
+        key_path: str = r"src\settings\key.key"):
         self.key = self.load_key(key_path)
         self.key = Fernet(self.key)
 
