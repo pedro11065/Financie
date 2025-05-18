@@ -144,14 +144,14 @@ class Users:
         def user(self, id, column, data):
 
             try:
-                # Correctly reference the table_users table
+                
                 stmt = (
                     update(table_users)
                     .where(table_users.id == id)
                     .values({column: data})
                 )
 
-                self.parent.session.execute(stmt)  # Execute the update statement
+                self.parent.session.execute(stmt)  
                 self.parent.session.commit()
 
                 print(Fore.GREEN + Style.BRIGHT + "User updated successfully!" + Style.RESET_ALL)

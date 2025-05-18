@@ -18,19 +18,19 @@ db = Db(table)
 #db.users.create.user(user)
 
 user = db.users.search.by_email(user.email)
-os.system("pause")
 
 # user = db.users.search.by_id(user.id)
 # os.system("pause")
 
-
 id = user.id
-column = ""
-data = "Luiz Guilherme"
+column = "fullname"
+data = "Pedro Henrique Silva Quixabeira"
 
 
 update = db.users.update.user(id, column, data)
 print(update)
+
+
 
 
 

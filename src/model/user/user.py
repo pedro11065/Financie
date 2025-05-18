@@ -1,6 +1,6 @@
 from sqlalchemy import String
 from sqlalchemy import Date
-
+from sqlalchemy import Uuid
 from sqlalchemy import LargeBinary
 
 from sqlalchemy.orm import Mapped
@@ -35,7 +35,7 @@ class User:
 
         data = table_users(
 
-            id=str(uuid.uuid4()),
+            id=uuid.uuid4(),
             fullname=self.fullname,
             cpf=self.cpf,  # Directly store the binary data
             phone=self.phone,  # Directly store the binary data
@@ -64,7 +64,7 @@ class table_users(Base):
 
     __tablename__ = "users"
 
-    id: Mapped[str] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[uuid] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     fullname: Mapped[str] = mapped_column(String(150), nullable=False)
     email: Mapped[str] = mapped_column(String(150), nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String(60), nullable=False)
