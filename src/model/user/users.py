@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError  # Import para capturar erros do SQLAlchemy
 from sqlalchemy import update
+from sqlalchemy import delete
 
 from colorama import Fore, Style
 
@@ -24,6 +25,7 @@ class Users:
         self.search = self.Search(self)
         self.create = self.Create(self)
         self.update = self.Update(self)
+        self.delete = self.Delete(self)
 
 
     class Create:
@@ -35,7 +37,7 @@ class Users:
 
             try:
                 
-                self.parent.user.encrypt()
+                user_data.encrypt()
                 self.parent.session.add(user_data.self_to_table())
                 self.parent.session.commit()
 
@@ -45,9 +47,9 @@ class Users:
             
             except Exception as e:
 
-                logging.error(str(e))
+                print(str(e.orig))
 
-                print(Fore.RED + Style.BRIGHT + "Error creating user!" + Style.RESET_ALL)
+                print(Fore.RED + Style.BRIGHT + "Error reading or searching user!" + Style.RESET_ALL)
 
                 return False
             
@@ -67,7 +69,7 @@ class Users:
 
                 search = self.parent.session.query(table_users).filter_by(id=id).first()
 
-                print(Fore.GREEN + Style.BRIGHT + "User read successfully!" + Style.RESET_ALL)
+                print(Fore.GREEN + Style.BRIGHT + "User search by id ended successfully!" + Style.RESET_ALL)
 
                 user = User(
                     id=str(search.id),
@@ -104,7 +106,7 @@ class Users:
 
                 search = self.parent.session.query(table_users).filter_by(email=email).first()
 
-                print(Fore.GREEN + Style.BRIGHT + "User search ended successfully!" + Style.RESET_ALL)
+                print(Fore.GREEN + Style.BRIGHT + "User search by email ended successfully!" + Style.RESET_ALL)
 
                 user = User(
                     id=str(search.id),
@@ -128,7 +130,7 @@ class Users:
 
                 logging.error(str(e))
 
-                print(Fore.RED + Style.BRIGHT + "Error reading user!" + Style.RESET_ALL)
+                print(Fore.RED + Style.BRIGHT + "Error reading or searching user!" + Style.RESET_ALL)
 
                 return False      
             
@@ -145,16 +147,16 @@ class Users:
 
             try:
                 
-                stmt = (
+                sql = (
                     update(table_users)
                     .where(table_users.id == id)
                     .values({column: data})
                 )
 
-                self.parent.session.execute(stmt)  
+                self.parent.session.execute(sql)  
                 self.parent.session.commit()
 
-                print(Fore.GREEN + Style.BRIGHT + "User updated successfully!" + Style.RESET_ALL)
+                print(Fore.GREEN + Style.BRIGHT + f"User {column} updated successfully!" + Style.RESET_ALL)
 
                 return True
 
@@ -170,27 +172,35 @@ class Users:
                 self.parent.engine.dispose()
 
 
-    def delete(self):
+    class Delete:
 
-        try:
+        def __init__(self, parent):        
+            self.parent = parent
 
-            user = self.session.query(table_users).filter_by(id=self.user.uuid).first()
-            user.deleted_at = datetime.now()
-            self.session.delete(self.user.to_table)
+        def user(self, id):
 
-            self.session.commit()
+            try:
 
-            print(Fore.GREEN + Style.BRIGHT + "User deleted successfully!" + Style.RESET_ALL)
+                sql = (
+                    delete(table_users)
+                    .where(table_users.id == id)
+                )
 
-            return True
-        
-        except Exception as e:
+                self.parent.session.execute(sql)  
+                self.parent.session.commit()
 
-            logging.error(str(e.orig))
 
-            print(Fore.RED + Style.BRIGHT + "Error deleting user!" + Style.RESET_ALL)
+                print(Fore.GREEN + Style.BRIGHT + "User deleted successfully!" + Style.RESET_ALL)
 
-            return False
-        
-        finally:
-            self.session.close() ; self.engine.dispose()
+                return True
+            
+            except Exception as e:
+
+                logging.error(str(e.orig))
+
+                print(Fore.RED + Style.BRIGHT + "Error deleting user!" + Style.RESET_ALL)
+
+                return False
+            
+            finally:
+                self.parent.session.close() ; self.parent.engine.dispose()

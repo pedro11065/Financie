@@ -15,20 +15,16 @@ user = User(fullname="Pedro Henrique",
 table = "users"
 db = Db(table)
 
-#db.users.create.user(user)
+db.users.create.user(user)
 
 user = db.users.search.by_email(user.email)
+user = db.users.search.by_id(user.id)
 
-# user = db.users.search.by_id(user.id)
-# os.system("pause")
-
-id = user.id
-column = "fullname"
-data = "Pedro Henrique Silva Quixabeira"
-
-
+id = user.id ; column = "fullname" ;data = "Pedro Henrique Silva Quixabeira"
 update = db.users.update.user(id, column, data)
-print(update)
+
+delete = db.users.delete.user(id)
+
 
 
 
