@@ -64,7 +64,7 @@ class table_users(Base):
 
     __tablename__ = "users"
 
-    id: Mapped[uuid] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     fullname: Mapped[str] = mapped_column(String(150), nullable=False)
     email: Mapped[str] = mapped_column(String(150), nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String(60), nullable=False)

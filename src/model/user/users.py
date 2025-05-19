@@ -108,23 +108,29 @@ class Users:
 
                 print(Fore.GREEN + Style.BRIGHT + "User search by email ended successfully!" + Style.RESET_ALL)
 
-                user = User(
-                    id=str(search.id),
-                    fullname=search.fullname,
-                    cpf=search.cpf,
-                    phone=search.phone,
-                    email=search.email,
-                    password=search.password,
-                    birthday=search.birthday,
-                    lgpd_consent=search.lgpd_consent,
-                    created_at=search.created_at,
-                    updated_at=search.updated_at,
-                    deleted_at=search.deleted_at
-                )
+                if search is not None: 
 
-                user.decrypt()
+                    print(Fore.GREEN + Style.BRIGHT + "User founded!" + Style.RESET_ALL)
 
-                return user
+                    user = User(
+                        id=str(search.id),
+                        fullname=search.fullname,
+                        cpf=search.cpf,
+                        phone=search.phone,
+                        email=search.email,
+                        password=search.password,
+                        birthday=search.birthday,
+                        lgpd_consent=search.lgpd_consent,
+                        created_at=search.created_at,
+                        updated_at=search.updated_at,
+                        deleted_at=search.deleted_at
+                    )
+
+                    user.decrypt()
+
+                    return user
+                
+                else: print(Fore.RED + Style.BRIGHT + "User not founded." + Style.RESET_ALL)
 
             except Exception as e:
 
@@ -161,6 +167,7 @@ class Users:
                 return True
 
             except SQLAlchemyError as e:
+                
                 logging.error(str(e))
                 print(Fore.RED + Style.BRIGHT + "Error updating user!" + Style.RESET_ALL)
                 print(e)

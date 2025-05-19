@@ -27,6 +27,7 @@ class Crypt:
         return encrypted_data
     
 
+
     
 
     #bcrypt.checkpw(input_password.encode(), stored_hash.encode())
