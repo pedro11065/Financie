@@ -2,17 +2,19 @@ from src.model.db import Db
 from src.settings.jwt import auth0
 import bcrypt,os
 
+from src.model.user.user import User
+
 class User_api_process:
 
-    @staticmethod
-    def login(data):
+    def __init__(self):
+        self.db = Db("users")
+
+    def login(self,data):
 
         try:
 
-            table = "users"
-            db = Db(table)
 
-            user = db.users.search.by_email(data["email"])
+            user = self.db.users.search.by_email(data["email"])
             
             if not user:
                 return {"Status": False, "message":"User don´t exist."}, 404
@@ -41,6 +43,28 @@ class User_api_process:
             print(e)
             return {"message": "Internal server error"}, 500
 
-    @staticmethod
-    def register(data):
-        None
+    def register(self, data):
+
+        user = User(fullname=data["fullname"], 
+            cpf=data["cpf"], 
+            email=data["email"],
+            phone=data["phone"],
+            password=data["password"], 
+            birthday=data["birthday"])
+        
+        if self.db.users.create.user(user):
+            return {"status": True, "message":"User created successfully!"}, 201
+        else:
+            return {"status": False, "message":"Internal server error."}, 500
+        
+    def forget_password( self,data):
+            
+            user = self.db.users.search.by_cpf(data["cpf"])
+    
+            if user:
+
+                email = user.email
+                #criar envio de email para a troca de senha
+                
+            
+            

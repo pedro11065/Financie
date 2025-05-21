@@ -1,2 +1,1 @@
-
-#db.users.create.user(user)
+db.users.create.user(user)

@@ -73,7 +73,7 @@ class Users:
 
                 user = User(
                     id=str(search.id),
-                    fullname=search.fullname,
+                    fullname=search.full_name,
                     cpf=search.cpf,
                     phone=search.phone,
                     email=search.email,
@@ -114,11 +114,11 @@ class Users:
 
                     user = User(
                         id=str(search.id),
-                        fullname=search.fullname,
+                        fullname=search.full_name,
                         cpf=search.cpf,
                         phone=search.phone,
                         email=search.email,
-                        password=search.password,
+                        password=search.password_hash,
                         birthday=search.birthday,
                         lgpd_consent=search.lgpd_consent,
                         created_at=search.created_at,

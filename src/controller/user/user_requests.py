@@ -15,18 +15,20 @@ user_api_request = Blueprint('auth_user_api', __name__, template_folder='templat
 def login():
     data = request.get_json() ; api_request = Api_request()
     return api_request.user.login(data)
+
 # -------------------------------------------------------------------------------------
 
 @user_api_request.route('/register', methods=['POST'])
 def register():
-    data = request.get_json()
-    return request.user.register(data)
+    data = request.get_json() ; api_request = Api_request()
+    return api_request.user.register(data)
 
 # -------------------------------------------------------------------------------------
 
 @user_api_request.route('/forget-password')
 def forget_password():
-    return render_template("user/forget_password.html")
+    data = request.get_json() ; api_request = Api_request()
+    return api_request.user.forget_password(data)
 
 # -------------------------------------------------------------------------------------
 

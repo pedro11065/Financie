@@ -36,11 +36,11 @@ class User:
         data = table_users(
 
             id=uuid.uuid4(),
-            fullname=self.fullname,
+            full_name=self.fullname,
             cpf=self.cpf,  # Directly store the binary data
             phone=self.phone,  # Directly store the binary data
             email=self.email,
-            password=bcrypt.hashpw(self.password.encode(), bcrypt.gensalt()).decode(),
+            password_hash=bcrypt.hashpw(self.password.encode(), bcrypt.gensalt()).decode(),
             birthday=self.birthday,
             lgpd_consent=True,
             created_at=datetime.now(),
@@ -65,9 +65,9 @@ class table_users(Base):
     __tablename__ = "users"
 
     id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    fullname: Mapped[str] = mapped_column(String(150), nullable=False)
+    full_name: Mapped[str] = mapped_column(String(150), nullable=False)
     email: Mapped[str] = mapped_column(String(150), nullable=False, unique=True)
-    password: Mapped[str] = mapped_column(String(60), nullable=False)
+    password_hash: Mapped[str] = mapped_column(String(60), nullable=False)
     birthday: Mapped[str] = mapped_column(Date, nullable=False)
     cpf: Mapped[bytes] = mapped_column(LargeBinary, nullable=False, unique=True)
     phone: Mapped[bytes] = mapped_column(LargeBinary, nullable=False, unique=False)
