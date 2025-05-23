@@ -10,8 +10,8 @@ import bcrypt, uuid
 
 from datetime import datetime
 
-from src.settings.cript import Crypt
-from src.settings.db import Base
+from src.settings.security.cript import Crypt
+from src.settings.db.db import Base
 
 from sqlalchemy.dialects.postgresql import UUID
 
@@ -78,3 +78,4 @@ class table_users(Base):
 
     #def __repr__(self):
      #   return f'User(id={self.id!r}, fullname={self.fullname!r}, email={self.email!r}, password={self.password!r}, birthday={self.birthday!r}, cpf={self.cpf!r}, phone={self.phone!r}, lgpd_consent={self.lgpd_consent!r}, created_at={self.created_at!r}, updated_at={self.updated_at!r}, deleted_at={self.deleted_at!r})'
+

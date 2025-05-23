@@ -1,6 +1,6 @@
 from src.model.db import Db
-from src.settings.jwt import auth0
-import bcrypt,os
+from src.settings.security.auth0 import Auth0
+import bcrypt, traceback
 
 from src.model.user.user import User
 
@@ -30,7 +30,7 @@ class User_api_process:
                     "birthday": user.birthday}
 
 
-            auth = auth0()
+            auth = Auth0()
             token = auth.encrypt(auth, payload)
             
             return {
@@ -41,7 +41,14 @@ class User_api_process:
 
         except Exception as e:
             print(e)
+            tb = traceback.extract_tb(e.__traceback__)
+            file_name, line_number, _, _ = tb[-1]
+            
+            print(f"Error in {file_name} at line {line_number}")
+            
             return {"message": "Internal server error"}, 500
+
+#------------------------------------------------------------------------
 
     def register(self, data):
 

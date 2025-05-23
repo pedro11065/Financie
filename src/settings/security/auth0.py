@@ -1,10 +1,11 @@
 import jwt
+from datetime import date
 
-class auth0:
+class Auth0:
 
     def __init__(self):
 
-        key_path: str = r"src\settings\key.key"
+        key_path: str = r"src\settings\security\key.key"
         self.key = self.load_key(key_path)
 
     @staticmethod
@@ -14,9 +15,14 @@ class auth0:
         
     @staticmethod        
     def encrypt(self, data):
+        # Convert date objects to strings
+        for key, value in data.items():
+            if isinstance(value, date):
+                data[key] = value.isoformat()
         token = jwt.encode(data, self.key, algorithm="HS256")
-        return token
-    
+        # Ensure compatibility with different return types
+        return token if isinstance(token, str) else token.decode('utf-8')
+        
     @staticmethod
     def decrypt(self, token):
         try:

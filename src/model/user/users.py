@@ -10,7 +10,7 @@ import logging
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 from src.model.user.user import * 
-from src.settings.db import Db_connect
+from src.settings.db.db import Db_connect
 from src.model.user.user import table_users  # Certifique-se de importar table_users corretamente
 
 
