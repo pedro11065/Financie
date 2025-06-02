@@ -13,7 +13,6 @@ class User_api_process:
 
         try:
 
-
             user = self.db.users.search.by_email(data["email"])
             
             if not user:
