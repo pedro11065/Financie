@@ -18,17 +18,9 @@ def create():
 
 # -------------------------------------------------------------------------------------
 
-# @user_api_request.route(f'/{id}', methods=['POST'])
-# def register():
-#     data = request.get_json() ; api_request = Api_request()
-#     return api_request.user.register(data)
-
-# # -------------------------------------------------------------------------------------
-
-# @user_api_request.route(f'/edit/{id}')
-# def forget_password():
-#     data = request.get_json() ; api_request = Api_request()
-#     return api_request.user.forget_password(data)
-
+@asset_api_request.route(f'/id', methods=['GET'])
+def register():
+    id = request.args.get('id') ;  type = request.args.get('type') ; api_request = Api_request()
+    return api_request.asset.search_by_id(id, type)
 
 

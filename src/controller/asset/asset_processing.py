@@ -1,6 +1,6 @@
 from src.model.db import Db
 from src.settings.security.auth0 import Auth0
-import bcrypt, traceback, uuid
+import bcrypt, traceback, uuid, os
 
 from datetime import datetime
 
@@ -11,6 +11,7 @@ class Asset_api_process:
     def __init__(self):
         self.db = Db("assets")
 
+
     def create(self, data):
 
         asset = Asset(name=data["name"], 
@@ -18,7 +19,7 @@ class Asset_api_process:
             category=data["category"],
             status=data["status"],
             location=data["location"], 
-            user_id=["user_id"],
+            user_id=data["user_id"],
             created_at=datetime.now(),
             id=uuid.uuid4())
         
@@ -27,6 +28,21 @@ class Asset_api_process:
         else:
             return {"status": False, "message":"Internal server error."}, 500
         
-                
+
+    def search_by_id(self, id, type):
+        
+        if type == "id":
+            asset = self.db.assets.search.by_id(id)
+        else:
+            asset = self.db.assets.search.by_user_id(id)
+
+        if asset:
+            print(asset.__dict__)
+            os.system('pause')
+            return {"status": True, "data": asset}, 200
+        else:
+            return {"status": False, "message":"Asset not found."}, 404      
+
             
-            
+
+    

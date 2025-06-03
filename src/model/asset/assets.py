@@ -47,7 +47,7 @@ class Assets:
             except Exception as e:
 
                 print(str(e))
-
+                print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error reading or searching Asset!" + Style.RESET_ALL)
 
                 return False
@@ -55,6 +55,7 @@ class Assets:
             finally:
                
                 self.parent.session.close() ; self.parent.engine.dispose()
+
 
     class Search:
         

@@ -64,3 +64,7 @@ class table_assets(Base):
     created_at: Mapped[datetime] = mapped_column(Date, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(Date, nullable=False)
     deleted_at: Mapped[datetime] = mapped_column(Date, nullable=True)
+
+    def __repr__(self):
+       return f'User(id={self.id!r}, fullname={self.fullname!r}, email={self.email!r}, password={self.password!r}, birthday={self.birthday!r}, cpf={self.cpf!r}, phone={self.phone!r}, lgpd_consent={self.lgpd_consent!r}, created_at={self.created_at!r}, updated_at={self.updated_at!r}, deleted_at={self.deleted_at!r})'
+
