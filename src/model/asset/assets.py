@@ -6,7 +6,7 @@ from sqlalchemy import delete
 
 from colorama import Fore, Style
 
-import logging, traceback
+import logging, traceback,os
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 from src.model.asset.asset import * 
@@ -102,7 +102,7 @@ class Assets:
                 
             try:
 
-                search = self.parent.session.query(table_assets).filter_by(user_id=user_id).first()
+                search = self.parent.session.query(table_assets).filter_by(user_id=user_id)
 
                 print(Fore.GREEN + Style.BRIGHT + "Asset search by user id ended successfully!" + Style.RESET_ALL)
 
@@ -110,6 +110,9 @@ class Assets:
 
                     print(Fore.GREEN + Style.BRIGHT + "Asset founded!" + Style.RESET_ALL)
 
+                    print(search.__dict__)
+                    os.system('pause')
+                    
                     asset = Asset(
                         id=str(search.id),
                         user_id=str(search.user_id),
@@ -123,7 +126,6 @@ class Assets:
                         deleted_at=search.deleted_at
                     )
                     
-
                     return asset
                 
                 else: print(Fore.RED + Style.BRIGHT + "Asset not founded." + Style.RESET_ALL)
