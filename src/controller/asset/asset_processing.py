@@ -32,19 +32,33 @@ class Asset_api_process:
     def search_by_id(self, id, type):
         
         if type == "id":
+
             asset = self.db.assets.search.by_id(id)
+
+            if asset:
+                asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+
+                asset = asset.__dict__
+
+                return {"status": True, "data": asset}, 200
+            
+    #-------------------------------------------------------------------------------
+
         else:
-            asset = self.db.assets.search.by_user_id(id)
 
-        if asset:
-            asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
-            asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+            assets = self.db.assets.search.by_user_id(id)
 
-            asset = asset.__dict__
+            if assets:
+                for i, asset in enumerate(assets):
+                    asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                    asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+                    assets[i] = asset.__dict__
 
-            return {"status": True, "data": asset}, 200
-        else:
-            return {"status": False, "message":"Asset not found."}, 404      
+                return {"status": True, "data": assets}, 200
+
+
+        return {"status": False, "message":"This user don´t have assets yet!"}, 404      
 
             
 

@@ -98,48 +98,48 @@ class Assets:
             finally:
                 self.parent.session.close() ; self.parent.engine.dispose()
 
-        def by_user_id(self, user_id):
-                
-            try:
 
-                search = self.parent.session.query(table_assets).filter_by(user_id=user_id)
+        def by_user_id(self, user_id):
+            try:
+                search = self.parent.session.query(table_assets).filter_by(user_id=user_id).all()
 
                 print(Fore.GREEN + Style.BRIGHT + "Asset search by user id ended successfully!" + Style.RESET_ALL)
 
-                if search is not None: 
+                if search:  
+                    print(Fore.GREEN + Style.BRIGHT + f"{len(search)} Asset(s) founded!" + Style.RESET_ALL)
 
-                    print(Fore.GREEN + Style.BRIGHT + "Asset founded!" + Style.RESET_ALL)
+                    assets = []
 
-                    print(search.__dict__)
-                    os.system('pause')
-                    
-                    asset = Asset(
-                        id=str(search.id),
-                        user_id=str(search.user_id),
-                        name=search.name,
-                        description=search.description,
-                        category=search.category,
-                        status=search.status,
-                        location=search.location,
-                        created_at=search.created_at,
-                        updated_at=search.updated_at,
-                        deleted_at=search.deleted_at
-                    )
-                    
-                    return asset
-                
-                else: print(Fore.RED + Style.BRIGHT + "Asset not founded." + Style.RESET_ALL)
+                    for record in search:
+                        
+                        asset = Asset(
+                            id=str(record.id),
+                            user_id=str(record.user_id),
+                            name=record.name,
+                            description=record.description,
+                            category=record.category,
+                            status=record.status,
+                            location=record.location,
+                            created_at=record.created_at,
+                            updated_at=record.updated_at,
+                            deleted_at=record.deleted_at
+                        )
+                        assets.append(asset)
+
+                    return assets 
+
+                else:
+                    print(Fore.RED + Style.BRIGHT + "Asset not founded." + Style.RESET_ALL)
+                    return []  
 
             except Exception as e:
-
                 logging.error(str(e))
-
                 print(Fore.RED + Style.BRIGHT + "Error reading or searching asset!" + Style.RESET_ALL)
+                return False
 
-                return False      
-            
             finally:
-                self.parent.session.close() ; self.parent.engine.dispose()            
+                self.parent.session.close()
+                self.parent.engine.dispose()     
 
 
     class Update:
