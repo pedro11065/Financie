@@ -1,4 +1,4 @@
-import jwt
+import jwt as pyjwt
 from datetime import date
 
 class Auth0:
@@ -14,22 +14,22 @@ class Auth0:
             return file.read()
         
     @staticmethod        
-    def encrypt(self, data):
+    def encrypt(self, payload):
         # Convert date objects to strings
-        for key, value in data.items():
+        for key, value in payload.items():
             if isinstance(value, date):
-                data[key] = value.isoformat()
-        token = jwt.encode(data, self.key, algorithm="HS256")
+                payload[key] = value.isoformat()
+        token = pyjwt.encode(payload, self.key, algorithm="HS256")
         # Ensure compatibility with different return types
         return token if isinstance(token, str) else token.decode('utf-8')
         
     @staticmethod
     def decrypt(self, token):
         try:
-            decoded_payload = jwt.decode(token, self.key, algorithms=["HS256"])
+            decoded_payload = pyjwt.decode(token, self.key, algorithms=["HS256"])
             return decoded_payload
-        except jwt.ExpiredSignatureError:
+        except pyjwt.ExpiredSignatureError:
             return {"message": "Token has expired"}
-        except jwt.InvalidTokenError:
+        except pyjwt.InvalidTokenError:
             return {"message": "Invalid token"}
 

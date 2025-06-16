@@ -19,8 +19,8 @@ def create():
 # -------------------------------------------------------------------------------------
 
 @asset_api_request.route(f'/id', methods=['GET'])
-def register():
+def search():
     id = request.args.get('id') ;  type = request.args.get('type') ; api_request = Api_request()
-    return api_request.asset.search_by_id(id, type)
+    return api_request.asset.search(id, type)
 
 

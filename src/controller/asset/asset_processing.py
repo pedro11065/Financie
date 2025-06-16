@@ -12,6 +12,8 @@ class Asset_api_process:
         self.db = Db("assets")
 
 
+    # ==============================================================================
+
     def create(self, data):
 
         asset = Asset(name=data["name"], 
@@ -28,8 +30,11 @@ class Asset_api_process:
         else:
             return {"status": False, "message":"Internal server error."}, 500
         
+    
+     # ==============================================================================
 
-    def search_by_id(self, id, type):
+
+    def search(self, id, type):
         
         if type == "id":
 
@@ -60,6 +65,5 @@ class Asset_api_process:
 
         return {"status": False, "message":"This user don´t have assets yet!"}, 404      
 
-            
 
-    
+    # ==============================================================================
