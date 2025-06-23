@@ -5,7 +5,7 @@ class Auth0:
 
     def __init__(self):
 
-        key_path: str = r"src\settings\security\key.key"
+        key_path: str = r"C:\Users\fsxre\OneDrive\Documentos\projetos\Financie\src\settings\security\key.key"
         self.key = self.load_key(key_path)
 
     @staticmethod
@@ -13,23 +13,33 @@ class Auth0:
         with open(file_path, "rb") as file:
             return file.read()
         
-    @staticmethod        
+              
     def encrypt(self, payload):
-        # Convert date objects to strings
+
         for key, value in payload.items():
             if isinstance(value, date):
                 payload[key] = value.isoformat()
         token = pyjwt.encode(payload, self.key, algorithm="HS256")
-        # Ensure compatibility with different return types
+
         return token if isinstance(token, str) else token.decode('utf-8')
-        
-    @staticmethod
+    
+    
     def decrypt(self, token):
-        try:
-            decoded_payload = pyjwt.decode(token, self.key, algorithms=["HS256"])
-            return decoded_payload
-        except pyjwt.ExpiredSignatureError:
-            return {"message": "Token has expired"}
-        except pyjwt.InvalidTokenError:
-            return {"message": "Invalid token"}
+
+        if token: #Se o token não for None
+
+            try:
+
+                token = token.replace('Bearer ', '')
+
+                decoded_payload = pyjwt.decode(token, self.key, algorithms=["HS256"]) #Decodificando
+                return True, decoded_payload
+            
+            except pyjwt.ExpiredSignatureError:
+                return False, {"message": "Token has expired"}
+            
+            except pyjwt.InvalidTokenError:
+                None
+
+            return False, {"message": "Invalid token"}
 

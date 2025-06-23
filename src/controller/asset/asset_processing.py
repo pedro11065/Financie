@@ -14,14 +14,14 @@ class Asset_api_process:
 
     # ==============================================================================
 
-    def create(self, data):
+    def create(self, data, payload):
 
         asset = Asset(name=data["name"], 
             description=data["description"], 
             category=data["category"],
             status=data["status"],
             location=data["location"], 
-            user_id=data["user_id"],
+            user_id=payload["id"],
             created_at=datetime.now(),
             id=uuid.uuid4())
         
@@ -34,11 +34,11 @@ class Asset_api_process:
      # ==============================================================================
 
 
-    def search(self, id, type):
+    def search(self, user_id, id, type):
         
         if type == "id":
 
-            asset = self.db.assets.search.by_id(id)
+            asset = self.db.assets.search.by_id(user_id, id)
 
             if asset:
                 asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')

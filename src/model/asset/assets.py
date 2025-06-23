@@ -63,11 +63,14 @@ class Assets:
             # Establish a reference to the parent Db_user instance
             self.parent = parent
 
-        def by_id(self, id):
+        def by_id(self, user_id, id):
 
             try:
+                
+                filter_data = {'user_id': user_id, 'id': id}
+                filter_data = {key: value for (key, value) in filter_data.items() if value}
 
-                search = self.parent.session.query(table_assets).filter_by(id=id).first()
+                search = self.parent.session.query(table_assets).filter_by(**filter_data).first()
 
                 print(Fore.GREEN + Style.BRIGHT + "Asset search by id ended successfully!" + Style.RESET_ALL)
 
