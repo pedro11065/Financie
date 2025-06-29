@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, session
 from flask_login import logout_user, login_required
 
-from src.controller.resquests import Api_request
+from src.controller.resquests_controller import Api_request
 
 #from src import cache
 
