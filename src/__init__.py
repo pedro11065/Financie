@@ -1,6 +1,6 @@
 from flask import Flask
-from .controller.user_requests import user_api_request
-from .controller.asset_requests import asset_api_request
+from .controller.mudules.user_requests import user_api_request
+from .controller.mudules.asset_requests import asset_api_request
 
 def create_app():
     app = Flask(__name__)
