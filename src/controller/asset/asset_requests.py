@@ -30,15 +30,10 @@ def create():
 def search():
 
     token = request.headers.get('Authorization')
-    auth = Auth0()
+
+    auth = Auth0() 
     payload = auth.decrypt(token)
 
-    if payload[0]:
+    api_request = Api_request()
 
-        user_id = payload[1]["id"] ; id = request.args.get('id') ;  type = request.args.get('type') ; 
-        api_request = Api_request()
-        return api_request.asset.search(user_id, id, type)
-    
-    return payload[1]
-
-
+    return api_request.asset.search(payload, request)

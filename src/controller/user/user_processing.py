@@ -30,7 +30,7 @@ class User_api_process:
 
 
             auth = Auth0()
-            token = auth.encrypt(auth, payload)
+            token = auth.encrypt(payload)
             
             return {
                 "status": True,

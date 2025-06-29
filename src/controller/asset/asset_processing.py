@@ -34,36 +34,44 @@ class Asset_api_process:
      # ==============================================================================
 
 
-    def search(self, user_id, id, type):
-        
-        if type == "id":
+    def search(self, payload, request):
 
-            asset = self.db.assets.search.by_id(user_id, id)
 
-            if asset:
-                asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
-                asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
-
-                asset = asset.__dict__
-
-                return {"status": True, "data": asset}, 200
+        if payload:
             
-    #-------------------------------------------------------------------------------
+            user_id = payload[1]["id"] 
+            id = request.args.get('id') ;  type = request.args.get('type')
+        
+            if type == "id":
 
-        else:
+                asset = self.db.assets.search.by_id(user_id, id)
 
-            assets = self.db.assets.search.by_user_id(id)
-
-            if assets:
-                for i, asset in enumerate(assets):
+                if asset:
                     asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
                     asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
-                    assets[i] = asset.__dict__
 
-                return {"status": True, "data": assets}, 200
+                    asset = asset.__dict__
+
+                    return {"status": True, "data": asset}, 200
+                
+        #-------------------------------------------------------------------------------
+
+            else: #type == User
+
+                assets = self.db.assets.search.by_user_id(id)
+
+                if assets:
+                    for i, asset in enumerate(assets):
+                        asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                        asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+                        assets[i] = asset.__dict__
+
+                    return {"status": True, "data": assets}, 200
 
 
-        return {"status": False, "message":"This user don´t have assets yet!"}, 404      
+            return {"status": False, "message":"This user don´t have assets yet!"}, 404      
+        
+        return {"status": False, "message":"User access not allowed."}, 405 
 
 
     # ==============================================================================

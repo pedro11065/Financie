@@ -1,11 +1,15 @@
 import jwt as pyjwt
 from datetime import date
 
+import os
+
 class Auth0:
 
     def __init__(self):
 
-        key_path: str = r"C:\Users\fsxre\OneDrive\Documentos\projetos\Financie\src\settings\security\key.key"
+        main_path = os.getcwd()
+
+        key_path: str = main_path +  r"\src\settings\security\key.key"
         self.key = self.load_key(key_path)
 
     @staticmethod
@@ -16,12 +20,14 @@ class Auth0:
               
     def encrypt(self, payload):
 
-        for key, value in payload.items():
-            if isinstance(value, date):
-                payload[key] = value.isoformat()
-        token = pyjwt.encode(payload, self.key, algorithm="HS256")
+        if payload:
 
-        return token if isinstance(token, str) else token.decode('utf-8')
+            for key, value in payload.items():
+                if isinstance(value, date):
+                    payload[key] = value.isoformat()
+            token = pyjwt.encode(payload, self.key, algorithm="HS256")
+
+            return token if isinstance(token, str) else token.decode('utf-8')
     
     
     def decrypt(self, token):

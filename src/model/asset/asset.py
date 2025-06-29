@@ -10,7 +10,7 @@ import uuid
 
 from datetime import datetime
 
-from src.settings.security.cript import Crypt
+from src.settings.security.hash import Crypt
 from src.settings.db.db import Base
 
 from sqlalchemy.dialects.postgresql import UUID
