@@ -17,13 +17,10 @@ def create():
     auth = Auth0()
     payload = auth.decrypt(token)
 
-    if payload[0]:
+    api_request = Api_request()
 
-        data = request.get_json() ; api_request = Api_request()
-        return api_request.asset.create(data, payload[1]) 
-    
-    return payload[1]
-    
+    return api_request.asset.create(payload, request) 
+
 # -------------------------------------------------------------------------------------
 
 @asset_api_request.route(f'/id', methods=['GET'])

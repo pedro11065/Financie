@@ -48,4 +48,6 @@ class Auth0:
                 None
 
             return False, {"message": "Invalid token"}
+        
+        return False, {"message": "No Token"}
 

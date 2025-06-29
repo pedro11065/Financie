@@ -14,21 +14,27 @@ class Asset_api_process:
 
     # ==============================================================================
 
-    def create(self, data, payload):
+    def create(self, payload, request):
 
-        asset = Asset(name=data["name"], 
-            description=data["description"], 
-            category=data["category"],
-            status=data["status"],
-            location=data["location"], 
-            user_id=payload["id"],
-            created_at=datetime.now(),
-            id=uuid.uuid4())
-        
-        if self.db.assets.create.asset(asset):
-            return {"status": True, "message":"Asset created successfully!"}, 201
-        else:
-            return {"status": False, "message":"Internal server error."}, 500
+        if payload[0]:
+
+            data = request.get_json()
+
+            asset = Asset(name=data["name"], 
+                description=data["description"], 
+                category=data["category"],
+                status=data["status"],
+                location=data["location"], 
+                user_id=payload[1]["id"],
+                created_at=datetime.now(),
+                id=uuid.uuid4())
+            
+            if self.db.assets.create.asset(asset):
+                return {"status": True, "message":"Asset created successfully!"}, 201
+            else:
+                return {"status": False, "message":"Internal server error."}, 500
+            
+        return {"status": False, "message":payload[1]["message"]}, 405 
         
     
      # ==============================================================================
@@ -37,8 +43,8 @@ class Asset_api_process:
     def search(self, payload, request):
 
 
-        if payload:
-            
+        if payload[0]:
+
             user_id = payload[1]["id"] 
             id = request.args.get('id') ;  type = request.args.get('type')
         
@@ -47,6 +53,7 @@ class Asset_api_process:
                 asset = self.db.assets.search.by_id(user_id, id)
 
                 if asset:
+
                     asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
                     asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -54,13 +61,17 @@ class Asset_api_process:
 
                     return {"status": True, "data": asset}, 200
                 
+                return {"status": False, "message":"Asset not finded."}, 404 
+                
+         
         #-------------------------------------------------------------------------------
 
-            else: #type == User
+            if type == "user":
 
                 assets = self.db.assets.search.by_user_id(id)
 
                 if assets:
+
                     for i, asset in enumerate(assets):
                         asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
                         asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
@@ -69,9 +80,11 @@ class Asset_api_process:
                     return {"status": True, "data": assets}, 200
 
 
-            return {"status": False, "message":"This user don´t have assets yet!"}, 404      
+                return {"status": False, "message":"Asset not finded."}, 404    
+
+            return  {"status": False, "message":"Invalid type."}, 404  
         
-        return {"status": False, "message":"User access not allowed."}, 405 
+        return {"status": False, "message":payload[1]["message"]}, 405 
 
 
     # ==============================================================================

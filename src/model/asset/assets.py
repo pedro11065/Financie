@@ -66,7 +66,7 @@ class Assets:
         def by_id(self, user_id, id):
 
             try:
-                
+
                 filter_data = {'user_id': user_id, 'id': id}
                 filter_data = {key: value for (key, value) in filter_data.items() if value}
 
