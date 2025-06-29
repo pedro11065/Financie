@@ -6,7 +6,7 @@ from sqlalchemy import delete
 
 from colorama import Fore, Style
 
-import logging, traceback,os
+import logging, traceback,datetime
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 from src.model.asset.asset import * 
@@ -27,6 +27,8 @@ class Assets:
         self.update = self.Update(self)
         self.delete = self.Delete(self)
 
+
+# ==============================================================================
 
     class Create:
 
@@ -56,6 +58,8 @@ class Assets:
                
                 self.parent.session.close() ; self.parent.engine.dispose()
 
+
+# ==============================================================================
 
     class Search:
         
@@ -145,22 +149,33 @@ class Assets:
                 self.parent.engine.dispose()     
 
 
+# ==============================================================================
+
     class Update:
 
         def __init__(self, parent):
             self.parent = parent
 
-        def asset(self, id, column, data):
+        def asset(self, user_id, id, column, value):
 
             try:
-                
-                sql = (
-                    update(table_assets)
-                    .where(table_assets.id == id)
-                    .values({column: data})
-                )
 
-                self.parent.session.execute(sql)  
+                sql1 = (
+                    update(table_assets)
+                    .where((table_assets.id == id) & (table_assets.user_id == user_id))
+                    .values({column: value})
+                )
+                self.parent.session.execute(sql1)
+
+                
+                sql2 = (
+                    update(table_assets)
+                    .where((table_assets.id == id) & (table_assets.user_id == user_id))
+                    .values({'updated_at': datetime.now()})
+                )
+                self.parent.session.execute(sql2)
+
+
                 self.parent.session.commit()
 
                 print(Fore.GREEN + Style.BRIGHT + f"Asset {column} updated successfully!" + Style.RESET_ALL)
@@ -180,21 +195,23 @@ class Assets:
                 self.parent.engine.dispose()
 
 
+# ==============================================================================
+
     class Delete:
 
         def __init__(self, parent):        
             self.parent = parent
 
-        def asset(self, id):
+        def asset(self, user_id, id):
 
             try:
 
                 sql = (
                     delete(table_assets)
-                    .where(table_assets.id == id)
+                    .where((table_assets.id == id) & (table_assets.user_id == user_id))
                 )
 
-                self.parent.session.execute(sql)  
+                self.parent.session.execute(sql)
                 self.parent.session.commit()
 
 

@@ -13,13 +13,11 @@ asset_api_request = Blueprint('auth_asset_api', __name__, template_folder='templ
 def create():
 
     token = request.headers.get('Authorization')
+    auth = Auth0() ; payload = auth.decrypt(token)
 
-    auth = Auth0()
-    payload = auth.decrypt(token)
+    api_request = Api_request(payload, request)
 
-    api_request = Api_request()
-
-    return api_request.asset.create(payload, request) 
+    return api_request.asset.create() 
 
 # -------------------------------------------------------------------------------------
 
@@ -27,10 +25,32 @@ def create():
 def search():
 
     token = request.headers.get('Authorization')
+    auth = Auth0() ; payload = auth.decrypt(token)
 
-    auth = Auth0() 
-    payload = auth.decrypt(token)
+    api_request = Api_request(payload, request)
 
-    api_request = Api_request()
+    return api_request.asset.search()
 
-    return api_request.asset.search(payload, request)
+# -------------------------------------------------------------------------------------
+
+@asset_api_request.route(f'/update', methods=['GET'])
+def update():
+
+    token = request.headers.get('Authorization')
+    auth = Auth0() ; payload = auth.decrypt(token)
+
+    api_request = Api_request(payload, request)
+
+    return api_request.asset.update()
+
+# -------------------------------------------------------------------------------------
+
+@asset_api_request.route(f'/delete', methods=['GET'])
+def delete():
+
+    token = request.headers.get('Authorization')
+    auth = Auth0() ; payload = auth.decrypt(token)
+
+    api_request = Api_request(payload, request)
+
+    return api_request.asset.delete()

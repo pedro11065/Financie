@@ -8,24 +8,26 @@ from src.model.asset.asset import *
 
 class Asset_api_process:
 
-    def __init__(self):
+    def __init__(self, payload, request):
         self.db = Db("assets")
+        self.payload = payload
+        self.request = request
 
 
     # ==============================================================================
 
-    def create(self, payload, request):
+    def create(self):
 
-        if payload[0]:
+        if self.payload[0]:
 
-            data = request.get_json()
+            request = self.request.get_json()
 
-            asset = Asset(name=data["name"], 
-                description=data["description"], 
-                category=data["category"],
-                status=data["status"],
-                location=data["location"], 
-                user_id=payload[1]["id"],
+            asset = Asset(name=request["name"], 
+                description=request["description"], 
+                category=request["category"],
+                status=request["status"],
+                location=request["location"], 
+                user_id=self.payload[1]["id"],
                 created_at=datetime.now(),
                 id=uuid.uuid4())
             
@@ -34,19 +36,19 @@ class Asset_api_process:
             else:
                 return {"status": False, "message":"Internal server error."}, 500
             
-        return {"status": False, "message":payload[1]["message"]}, 405 
+        return {"status": False, "message":self.payload[1]["message"]}, 405 
         
-    
-     # ==============================================================================
+
+    # ==============================================================================
 
 
-    def search(self, payload, request):
+    def search(self):
 
 
-        if payload[0]:
+        if self.payload[0]:
 
-            user_id = payload[1]["id"] 
-            id = request.args.get('id') ;  type = request.args.get('type')
+            user_id = self.payload[1]["id"] 
+            id = self.request.args.get('id') ;  type = self.request.args.get('type')
         
             if type == "id":
 
@@ -84,7 +86,46 @@ class Asset_api_process:
 
             return  {"status": False, "message":"Invalid type."}, 404  
         
-        return {"status": False, "message":payload[1]["message"]}, 405 
+        return {"status": False, "message":self.payload[1]["message"]}, 405 
+    
+
+    # ==============================================================================
+
+
+    def update(self):
+
+        if self.payload[0]:
+
+            request = self.request.get_json()
+
+            user_id = self.payload[1]["id"] 
+            asset_id = request['id']  
+            column = request['column']
+            value = request["value"]
+
+            if self.db.assets.update.asset(user_id, asset_id, column, value):
+                return {"status": True, "message":"Asset updated successfully!"}, 201
+            else:
+                return {"status": False, "message":"Asset not finded."}, 500
+            
+        return {"status": False, "message":self.payload[1]["message"]}, 405 
 
 
     # ==============================================================================
+
+    
+    def delete(self):
+        
+        if self.payload[0]:
+
+            request = self.request.get_json()
+
+            user_id = self.payload[1]["id"] 
+            asset_id = request['id'] 
+
+            if self.db.assets.delete.asset(user_id, asset_id):
+                return {"status": True, "message":"Asset deleted successfully!"}, 201
+            else:
+                return {"status": False, "message":"Asset not finded."}, 500
+
+        return {"status": False, "message":self.payload[1]["message"]}, 405 
