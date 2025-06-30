@@ -1,4 +1,4 @@
-from src.model.db._db_ import Db
+from src.model.db.DbController import Db
 from src.model.settings.security.auth0 import Auth0
 import bcrypt, traceback
 

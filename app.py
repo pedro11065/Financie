@@ -1,4 +1,4 @@
-from src.model.db._db_ import Db
+from src.model.db.DbController import Db
 
 import os
 

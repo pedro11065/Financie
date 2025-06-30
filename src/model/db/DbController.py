@@ -1,6 +1,6 @@
-from src.model.tables.users import Users
-from src.model.tables.assets import Assets
-from src.model.tables.liabilities import Liabilities
+from src.model.db.tables.users import Users
+from src.model.db.tables.assets import Assets
+from src.model.db.tables.liabilities import Liabilities
 
 class Db:
 
