@@ -1,24 +1,28 @@
-from src.model.db import Db
-from src.settings.security.auth0 import Auth0
+from src.model.db._db_ import Db
+from src.model.settings.security.auth0 import Auth0
 import bcrypt, traceback
 
-from src.model.user.user import User
+from src.model.classes.user import User
 
 class User_api_process:
 
-    def __init__(self):
+    def __init__(self, payload, request):
         self.db = Db("users")
+        self.payload = payload
+        self.request = request
 
-    def login(self,data):
+    def login(self):
 
+        request = self.request.get_json()
+        
         try:
 
-            user = self.db.users.search.by_email(data["email"])
+            user = self.db.users.search.by_email(request["email"])
             
             if not user:
                 return {"Status": False, "message":"User don´t exist."}, 404
 
-            if not bcrypt.checkpw(data["password"].encode(), user.password.encode()):
+            if not bcrypt.checkpw(request["password"].encode(), user.password.encode()):
                 return {"status": False, "message":"Wrong password."}, 401  
 
 
@@ -49,14 +53,16 @@ class User_api_process:
 
 #------------------------------------------------------------------------
 
-    def register(self, data):
+    def register(self):
 
-        user = User(fullname=data["fullname"], 
-            cpf=data["cpf"], 
-            email=data["email"],
-            phone=data["phone"],
-            password=data["password"], 
-            birthday=data["birthday"])
+        request = self.request.get_json()
+            
+        user = User(fullname=request["fullname"], 
+            cpf=request["cpf"], 
+            email=request["email"],
+            phone=request["phone"],
+            password=request["password"], 
+            birthday=request["birthday"])
         
         if self.db.users.create.user(user):
             return {"status": True, "message":"User created successfully!"}, 201

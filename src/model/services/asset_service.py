@@ -1,10 +1,10 @@
-from src.model.db import Db
-from src.settings.security.auth0 import Auth0
+from src.model.db._db_ import Db
+from src.model.settings.security.auth0 import Auth0
 import bcrypt, traceback, uuid, os
 
 from datetime import datetime
 
-from src.model.asset.asset import *
+from src.model.classes.asset import *
 
 class Asset_api_process:
 

@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, redirect, session, jsonif
 from flask_login import logout_user, login_required
 
 from src.controller.resquests_controller import Api_request
-from src.settings.security.auth0 import *
+from src.model.settings.security.auth0 import *
 
 import os
 asset_api_request = Blueprint('auth_asset_api', __name__, template_folder='templates', static_folder='static')

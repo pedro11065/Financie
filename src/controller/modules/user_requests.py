@@ -1,6 +1,8 @@
 from flask import Blueprint, request, render_template, redirect, session
 from flask_login import logout_user, login_required
 
+from src.model.settings.security.auth0 import *
+
 from src.controller.resquests_controller import Api_request
 
 #from src import cache
@@ -13,22 +15,37 @@ user_api_request = Blueprint('auth_user_api', __name__, template_folder='templat
 
 @user_api_request.route('/login', methods=['POST'])
 def login():
-    data = request.get_json() ; api_request = Api_request()
-    return api_request.user.login(data)
+
+    token = request.headers.get('Authorization')
+    auth = Auth0() ; payload = auth.decrypt(token)
+
+    api_request = Api_request(payload, request)
+
+    return api_request.user.login()
 
 # -------------------------------------------------------------------------------------
 
 @user_api_request.route('/register', methods=['POST'])
 def register():
-    data = request.get_json() ; api_request = Api_request()
-    return api_request.user.register(data)
+
+    token = request.headers.get('Authorization')
+    auth = Auth0() ; payload = auth.decrypt(token)
+
+    api_request = Api_request(payload, request)
+
+    return api_request.user.register()
 
 # -------------------------------------------------------------------------------------
 
 @user_api_request.route('/forget-password')
 def forget_password():
-    data = request.get_json() ; api_request = Api_request()
-    return api_request.user.forget_password(data)
+
+    token = request.headers.get('Authorization')
+    auth = Auth0() ; payload = auth.decrypt(token)
+
+    api_request = Api_request(payload, request)
+    
+    return api_request.user.forget_password()
 
 # -------------------------------------------------------------------------------------
 

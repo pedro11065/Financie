@@ -1,5 +1,4 @@
-from src.model.db import Db
-from src.model.user.user import User
+from src.model.db._db_ import Db
 
 import os
 

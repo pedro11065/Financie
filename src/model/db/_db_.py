@@ -1,5 +1,5 @@
-from src.model.user.users import Users
-from src.model.asset.assets import Assets
+from src.model.tables.users import Users
+from src.model.tables.assets import Assets
 
 class Db:
 

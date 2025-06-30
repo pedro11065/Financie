@@ -9,9 +9,9 @@ from colorama import Fore, Style
 import logging, traceback,datetime
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
-from src.model.asset.asset import * 
-from src.settings.db.db import Db_connect
-from src.model.asset.asset import table_assets # Certifique-se de importar table_users corretamente
+from src.model.classes.asset import * 
+from src.model.db.DbConnect import Db_connect
+from src.model.classes.asset import table_assets # Certifique-se de importar table_users corretamente
 
 
 class Assets:
