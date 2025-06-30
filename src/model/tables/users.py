@@ -28,6 +28,8 @@ class Users:
         self.delete = self.Delete(self)
 
 
+# ==============================================================================
+
     class Create:
 
         def __init__(self, parent):        
@@ -56,6 +58,9 @@ class Users:
             finally:
                
                 self.parent.session.close() ; self.parent.engine.dispose()
+
+
+# ==============================================================================
 
     class Search:
         
@@ -144,6 +149,8 @@ class Users:
                 self.parent.session.close() ; self.parent.engine.dispose()            
 
 
+# ==============================================================================
+
     class Update:
 
         def __init__(self, parent):
@@ -178,6 +185,8 @@ class Users:
                 self.parent.session.close()
                 self.parent.engine.dispose()
 
+
+# ==============================================================================
 
     class Delete:
 
