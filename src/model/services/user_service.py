@@ -4,7 +4,7 @@ import bcrypt, traceback
 
 from src.model.classes.user import User
 
-class User_api_process:
+class User_service:
 
     def __init__(self, payload, request):
         self.db = Db("users")

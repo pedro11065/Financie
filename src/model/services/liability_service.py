@@ -4,12 +4,12 @@ import bcrypt, traceback, uuid, os
 
 from datetime import datetime
 
-from src.model.classes.asset import *
+from src.model.classes.liability import *
 
-class Asset_service:
+class Liability_service:
 
     def __init__(self, payload, request):
-        self.db = Db("assets")
+        self.db = Db("liabilities")
         self.payload = payload
         self.request = request
 
@@ -22,7 +22,7 @@ class Asset_service:
 
             request = self.request.get_json()
 
-            asset = Asset(name=request["name"], 
+            liability = Liability(name=request["name"], 
                 description=request["description"], 
                 category=request["category"],
                 status=request["status"],
@@ -31,8 +31,8 @@ class Asset_service:
                 created_at=datetime.now(),
                 id=uuid.uuid4())
             
-            if self.db.assets.create.asset(asset):
-                return {"status": True, "message":"Asset created successfully!"}, 201
+            if self.db.liabilities.create.liability(liability):
+                return {"status": True, "message":"Liability created successfully!"}, 201
             else:
                 return {"status": False, "message":"Internal server error."}, 500
             
@@ -52,16 +52,16 @@ class Asset_service:
         
             if type == "id":
 
-                asset = self.db.assets.search.by_id(user_id, id)
+                liability = self.db.liabilities.search.by_id(user_id, id)
 
-                if asset:
+                if liability:
 
-                    asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
-                    asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+                    liability.created_at = liability.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                    liability.updated_at = liability.updated_at.strftime('%Y-%m-%d %H:%M:%S')
 
-                    asset = asset.__dict__
+                    liability = liability.__dict__
 
-                    return {"status": True, "data": asset}, 200
+                    return {"status": True, "data": liability}, 200
                 
                 return {"status": False, "message":"Asset not finded."}, 404 
                 
@@ -74,10 +74,10 @@ class Asset_service:
 
                 if assets:
 
-                    for i, asset in enumerate(assets):
-                        asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
-                        asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
-                        assets[i] = asset.__dict__
+                    for i, liability in enumerate(assets):
+                        liability.created_at = liability.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                        liability.updated_at = liability.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+                        assets[i] = liability.__dict__
 
                     return {"status": True, "data": assets}, 200
 
