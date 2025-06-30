@@ -63,26 +63,26 @@ class Liability_service:
 
                     return {"status": True, "data": liability}, 200
                 
-                return {"status": False, "message":"Asset not finded."}, 404 
+                return {"status": False, "message":"liability not finded."}, 404 
                 
          
         #-------------------------------------------------------------------------------
 
             if type == "user":
 
-                assets = self.db.assets.search.by_user_id(id)
+                liabilities = self.db.liabilities.search.by_user_id(id)
 
-                if assets:
+                if liabilities:
 
-                    for i, liability in enumerate(assets):
+                    for i, liability in enumerate(liabilities):
                         liability.created_at = liability.created_at.strftime('%Y-%m-%d %H:%M:%S')
                         liability.updated_at = liability.updated_at.strftime('%Y-%m-%d %H:%M:%S')
-                        assets[i] = liability.__dict__
+                        liabilities[i] = liability.__dict__
 
-                    return {"status": True, "data": assets}, 200
+                    return {"status": True, "data": liabilities}, 200
 
 
-                return {"status": False, "message":"Asset not finded."}, 404    
+                return {"status": False, "message":"Liability not finded."}, 404    
 
             return  {"status": False, "message":"Invalid type."}, 404  
         
@@ -99,15 +99,19 @@ class Liability_service:
             request = self.request.get_json()
 
             user_id = self.payload[1]["id"] 
-            asset_id = request['id']  
+            liability_id = request['id']  
             column = request['column']
             value = request["value"]
 
-            if self.db.assets.update.asset(user_id, asset_id, column, value):
-                return {"status": True, "message":"Asset updated successfully!"}, 201
-            else:
-                return {"status": False, "message":"Asset not finded."}, 500
+            if column not in columns:
+
+                if self.db.liabilities.update.liability(user_id, liability_id, column, value):
+                    return {"status": True, "message":"liability updated successfully!"}, 201
+                
+                return {"status": False, "message":"Liability not finded."}, 500
             
+            return {"status": False, "message":"Invalid column."}, 405
+
         return {"status": False, "message":self.payload[1]["message"]}, 405 
 
 
@@ -121,11 +125,11 @@ class Liability_service:
             request = self.request.get_json()
 
             user_id = self.payload[1]["id"] 
-            asset_id = request['id'] 
+            liability_id = request['id'] 
 
-            if self.db.assets.delete.asset(user_id, asset_id):
-                return {"status": True, "message":"Asset deleted successfully!"}, 201
+            if self.db.liabilities.delete.liability(user_id, liability_id):
+                return {"status": True, "message":"Liability deleted successfully!"}, 201
             else:
-                return {"status": False, "message":"Asset not finded."}, 500
+                return {"status": False, "message":"Liability not finded."}, 500
 
         return {"status": False, "message":self.payload[1]["message"]}, 405 

@@ -103,11 +103,15 @@ class Asset_service:
             column = request['column']
             value = request["value"]
 
-            if self.db.assets.update.asset(user_id, asset_id, column, value):
-                return {"status": True, "message":"Asset updated successfully!"}, 201
-            else:
+            if column not in columns:
+
+                if self.db.assets.update.asset(user_id, asset_id, column, value):
+                    return {"status": True, "message":"Asset updated successfully!"}, 201
+
                 return {"status": False, "message":"Asset not finded."}, 500
-            
+
+            return {"status": False, "message":"Invalid column."}, 405
+          
         return {"status": False, "message":self.payload[1]["message"]}, 405 
 
 

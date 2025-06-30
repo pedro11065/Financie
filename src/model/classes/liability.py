@@ -15,6 +15,8 @@ from src.model.db.DbConnect import Base
 
 from sqlalchemy.dialects.postgresql import UUID
 
+columns = ['name', 'description', 'category', 'status', 'location']
+
 
 class Liability:
 
