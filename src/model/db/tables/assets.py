@@ -75,9 +75,7 @@ class Assets:
                 filter_data = {key: value for (key, value) in filter_data.items() if value}
 
                 search = self.parent.session.query(table_assets).filter_by(**filter_data).first()
-
-                print(Fore.GREEN + Style.BRIGHT + "Asset search by id ended successfully!" + Style.RESET_ALL)
-
+                
                 asset = Asset(
                     id=str(search.id),
                     user_id=str(search.user_id),
@@ -91,13 +89,14 @@ class Assets:
                     deleted_at=search.deleted_at
                 )
                 
-
+                print(Fore.GREEN + Style.BRIGHT + "Asset search by id ended successfully!" + Style.RESET_ALL)
+                
                 return asset
 
             except Exception as e:
 
                 logging.error(str(e))
-
+                print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error reading asset!" + Style.RESET_ALL)
 
                 return False
@@ -141,6 +140,7 @@ class Assets:
 
             except Exception as e:
                 logging.error(str(e))
+                print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error reading or searching asset!" + Style.RESET_ALL)
                 return False
 
@@ -185,6 +185,7 @@ class Assets:
             except SQLAlchemyError as e:
                 
                 logging.error(str(e))
+                print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error updating asset!" + Style.RESET_ALL)
                 print(e)
 

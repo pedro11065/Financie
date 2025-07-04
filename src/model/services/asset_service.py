@@ -47,12 +47,16 @@ class Asset_service:
 
         if self.payload[0]:
 
-            user_id = self.payload[1]["id"] 
-            id = self.request.args.get('id') ;  type = self.request.args.get('type')
+            user_id = self.payload[1]["id"]  ; asset = False
+            type = self.request.args.get('type')
         
             if type == "id":
 
-                asset = self.db.assets.search.by_id(user_id, id)
+                id = self.request.args.get('id') 
+
+                if id:
+
+                    asset = self.db.assets.search.by_id(user_id, id)
 
                 if asset:
 
@@ -70,7 +74,7 @@ class Asset_service:
 
             if type == "user":
 
-                assets = self.db.assets.search.by_user_id(id)
+                assets = self.db.assets.search.by_user_id(user_id)
 
                 if assets:
 
@@ -103,7 +107,7 @@ class Asset_service:
             column = request['column']
             value = request["value"]
 
-            if column not in columns:
+            if column in columns:
 
                 if self.db.assets.update.asset(user_id, asset_id, column, value):
                     return {"status": True, "message":"Asset updated successfully!"}, 201

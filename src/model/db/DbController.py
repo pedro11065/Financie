@@ -13,4 +13,4 @@ class Db:
             self.assets: object = Assets()
        
         if type == 'liabilities':
-            self.assets: object = Liabilities()
+            self.liabilities: object = Liabilities()

@@ -96,7 +96,7 @@ class Liabilities:
             except Exception as e:
 
                 logging.error(str(e))
-
+                print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error reading liability!" + Style.RESET_ALL)
 
                 return False
@@ -140,6 +140,7 @@ class Liabilities:
 
             except Exception as e:
                 logging.error(str(e))
+                print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error reading or searching liability!" + Style.RESET_ALL)
                 return False
 
@@ -184,6 +185,7 @@ class Liabilities:
             except SQLAlchemyError as e:
                 
                 logging.error(str(e))
+                print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error updating liability!" + Style.RESET_ALL)
                 print(e)
 
@@ -221,7 +223,7 @@ class Liabilities:
             except Exception as e:
 
                 logging.error(str(e.orig))
-
+                print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error deleting liability!" + Style.RESET_ALL)
 
                 return False

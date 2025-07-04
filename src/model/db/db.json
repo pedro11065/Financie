@@ -1,8 +1,8 @@
 {
     "db": {
-    "logged": 1, "host": "localhost",
+    "logged": 1, "host": "ep-twilight-mode-ac78408c-pooler.sa-east-1.aws.neon.tech",
     "database": "financie",
-    "user": "postgres",
-    "password": "32372403"
+    "user": "neondb_owner",
+    "password": "npg_3qJaenBHWS4M"
     }
 }

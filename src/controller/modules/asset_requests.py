@@ -33,7 +33,7 @@ def search():
 
 # -------------------------------------------------------------------------------------
 
-@asset_api_request.route(f'/update', methods=['GET'])
+@asset_api_request.route(f'/update', methods=['PUT'])
 def update():
 
     token = request.headers.get('Authorization')
@@ -45,7 +45,7 @@ def update():
 
 # -------------------------------------------------------------------------------------
 
-@asset_api_request.route(f'/delete', methods=['GET'])
+@asset_api_request.route(f'/delete', methods=['DELETE'])
 def delete():
 
     token = request.headers.get('Authorization')
