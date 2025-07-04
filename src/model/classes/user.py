@@ -15,8 +15,10 @@ from src.model.db.DbConnect import Base
 
 from sqlalchemy.dialects.postgresql import UUID
 
+from flask_login import UserMixin
 
-class User:
+
+class User(UserMixin):
 
     def __init__(self, fullname, cpf, phone, email, password, birthday, id=None, lgpd_consent=None, created_at=None, updated_at=None, deleted_at=None):
         self.id: str = id
@@ -58,8 +60,10 @@ class User:
         self.cpf = Crypt().decrypt(self.cpf)
         self.phone = Crypt().decrypt(self.phone)
     
+    def get_id(self):
+        return self.id
 
-        
+
 class table_users(Base):
 
     __tablename__ = "users"

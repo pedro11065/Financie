@@ -1,7 +1,6 @@
 from src.model.db.DbController import Db
-from src.model.settings.security.auth0 import Auth0
 import bcrypt, traceback
-
+from src.model.settings.security.auth0 import *
 from src.model.classes.user import User
 
 class User_service:
@@ -68,6 +67,8 @@ class User_service:
             return {"status": True, "message":"User created successfully!"}, 201
         else:
             return {"status": False, "message":"Internal server error."}, 500
+
+#------------------------------------------------------------------------
         
     def forget_password( self,data):
             
