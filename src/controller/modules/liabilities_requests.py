@@ -2,7 +2,7 @@ from flask import Blueprint, request, render_template, redirect, session, jsonif
 from flask_login import logout_user, login_required
 
 from src.controller.resquests_controller import Api_request
-from src.model.settings.security.auth0 import *
+from src.model.settings.security.JWT import *
 
 import os
 liability_api_request = Blueprint('auth_liability_api', __name__, template_folder='templates', static_folder='static')
