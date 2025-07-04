@@ -1,6 +1,6 @@
 from src.model.db.DbController import Db
 import bcrypt, traceback
-from src.model.settings.security.JWT import *
+from src.model.auth.JWT import *
 from src.model.classes.user import User
 
 class User_service:

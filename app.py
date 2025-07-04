@@ -6,7 +6,7 @@ from src import *
 from flask_cors import CORS
 from flask import render_template
 from flask_login import LoginManager
-from src.controller.auth.user_loader import load_user  # Import the refactored function
+from src.model.auth.userloader import load_user  # Import the refactored function
 
 app = create_app()
 CORS(app)  # O CORS é um sistema de segurança das requisições HTTP que verifica o método da API antes de chamá-lo.

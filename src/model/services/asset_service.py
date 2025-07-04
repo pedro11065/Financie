@@ -1,5 +1,5 @@
 from src.model.db.DbController import Db
-from src.model.settings.security.JWT import Auth0
+from src.model.auth.JWT import Auth0
 import bcrypt, traceback, uuid, os
 
 from datetime import datetime

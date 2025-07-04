@@ -9,7 +9,7 @@ class Auth0:
 
         main_path = os.getcwd()
 
-        key_path: str = r"src\model\settings\security\key.key"
+        key_path: str = r"src\model\settings\auth\key.key"
         self.key = self.load_key(key_path)
 
     @staticmethod

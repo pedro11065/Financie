@@ -10,7 +10,7 @@ import uuid
 
 from datetime import datetime
 
-from src.model.settings.security.hash import Crypt
+from src.model.auth.hash import Crypt
 from src.model.db.DbConnect import Base
 
 from sqlalchemy.dialects.postgresql import UUID
