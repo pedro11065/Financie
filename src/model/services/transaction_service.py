@@ -22,16 +22,64 @@ class transaction_service:
 
             request = self.request.get_json()
 
-            
+            #-----------------------------------------------------------------------
 
-            transaction = Transaction(name=request["name"], 
-                description=request["description"], 
-                category=request["category"],
-                status=request["status"],
-                location=request["location"], 
+            # TRANSACTION TYPE: EXIT (Money going out)
+            if request["transaction_type"] == "exit":
+                if request["liability_id"] == "" and request["asset_id"] == "":
+                    # Case 1: Direct expense (no asset or liability involved)
+                    None
+                elif request["liability_id"] != "" and request["asset_id"] == "":
+                    # Case 2: Paying off a liability/debt
+                    None
+                elif request["liability_id"] == "" and request["asset_id"] != "":
+                    # Case 3: Paying for an asset
+                    None
+                elif request["liability_id"] != "" and request["asset_id"] != "":
+                    # Case 4: Paying for an asset using a liability (e.g., credit card)
+                    None
+
+            # TRANSACTION TYPE: ENTRY (Money coming in)
+            elif request["transaction_type"] == "entry":
+                if request["asset_id"] == "" and request["liability_id"] == "":
+                    # Case 1: Direct income (salary, dividends, etc.)
+                    None
+                elif request["asset_id"] != "" and request["liability_id"] == "":
+                    # Case 2: Income from an asset (rent, investment return, etc.)
+                    None
+                elif request["asset_id"] == "" and request["liability_id"] != "":
+                    # Case 3: Taking on new liability (loan received)
+                    None
+                elif request["asset_id"] != "" and request["liability_id"] != "":
+                    # Case 4: Asset sold with liability transfer
+                    None
+
+            # TRANSACTION TYPE: TRANSFER
+            elif request["transaction_type"] == "transfer":
+                # Case 1: Transfer between accounts or assets
+                None
+
+            transaction = Transaction(
+
+                id=uuid.uuid4(),
+
                 user_id=self.payload[1]["id"],
-                created_at=datetime.now(),
-                id=uuid.uuid4())
+
+                asset_id=request["asset_id"],
+                liability_id=request["liability_id"],
+
+                credit_card_id=request["credit_card_id"], 
+                
+                statement_id=request["statement_id"], 
+
+                transaction_type=request["transaction_type"],
+                payment_method=request["payment_method"],
+                payment_status=request["payment_status"], 
+                currency=request["currency"],
+                amount=request["amount"],
+                created_at=datetime.now()
+                )
+                
             
             if self.db.transactions.create.transaction(transaction):
                 return {"status": True, "message":"Transaction created successfully!"}, 201
@@ -139,4 +187,4 @@ class transaction_service:
             else:
                 return {"status": False, "message":"Transaction not finded."}, 500
 
-        return {"status": False, "message":self.payload[1]["message"]}, 405 
+        return {"status": False, "message":self.payload[1]["message"]}, 405
