@@ -56,7 +56,7 @@ class Transaction:
     def self_to_table(self):
 
         data = table_transactions(
-            id=self.id,
+            id=uuid.uuid4(),
             user_id=self.user_id,
             asset_id=self.asset_id,
             liability_id=self.liability,
@@ -68,7 +68,7 @@ class Transaction:
             currency=self.currency,
             amount=self.amount,
             created_at=self.created_at,
-            updated_at=self.updated_at,
+            updated_at=datetime.now(),
             deleted_at=self.deleted_at
         )
         return data

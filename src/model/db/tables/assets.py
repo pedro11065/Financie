@@ -35,11 +35,11 @@ class Assets:
         def __init__(self, parent):        
             self.parent = parent
         
-        def asset(self, asset_data):
+        def asset(self, asset_obj):
 
             try:
                 
-                self.parent.session.add(asset_data.self_to_table())
+                self.parent.session.add(asset_obj.self_to_table())
                 self.parent.session.commit()
 
                 print(Fore.GREEN + Style.BRIGHT + "Asset created successfully!" + Style.RESET_ALL)

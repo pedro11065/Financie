@@ -6,7 +6,7 @@ from sqlalchemy import delete
 
 from colorama import Fore, Style
 
-import logging
+import logging, traceback
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 from src.model.classes.user import * 
@@ -50,7 +50,7 @@ class Users:
             except Exception as e:
 
                 print(str(e.orig))
-
+                print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error reading or searching user!" + Style.RESET_ALL)
 
                 return False
@@ -82,7 +82,7 @@ class Users:
                     cpf=search.cpf,
                     phone=search.phone,
                     email=search.email,
-                    password=search.password,
+                    password_hash=search.password_hash,
                     birthday=search.birthday,
                     lgpd_consent=search.lgpd_consent,
                     created_at=search.created_at,
@@ -97,8 +97,8 @@ class Users:
             except Exception as e:
 
                 logging.error(str(e))
-
-                print(Fore.RED + Style.BRIGHT + "Error reading user!" + Style.RESET_ALL)
+                print(traceback.format_exc())
+                print(Fore.RED + Style.BRIGHT + "Error searching user!" + Style.RESET_ALL)
 
                 return False
             
@@ -140,7 +140,7 @@ class Users:
             except Exception as e:
 
                 logging.error(str(e))
-
+                print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error reading or searching user!" + Style.RESET_ALL)
 
                 return False      

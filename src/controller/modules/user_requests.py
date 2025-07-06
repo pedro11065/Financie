@@ -13,7 +13,7 @@ user_api_request = Blueprint('auth_user_api', __name__, template_folder='templat
 
 # -------------------------------------------------------------------------------------
 
-@user_api_request.route('/login', methods=['POST'])
+@user_api_request.route('/login', methods=['GET'])
 def login():
 
     token = request.headers.get('Authorization')

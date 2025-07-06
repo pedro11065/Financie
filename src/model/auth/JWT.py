@@ -1,5 +1,6 @@
 import jwt as pyjwt
 from datetime import date
+from src.model.db.DbController import Db
 
 import os
 
@@ -8,9 +9,10 @@ class Auth0:
     def __init__(self):
 
         main_path = os.getcwd()
-
-        key_path: str = r"src\model\settings\auth\key.key"
+        
+        key_path: str = r"src\model\auth\key.key"
         self.key = self.load_key(key_path)
+        self.db = Db("users")
 
     @staticmethod
     def load_key(file_path) -> bytes:
@@ -39,9 +41,15 @@ class Auth0:
                 token = token.replace('Bearer ', '')
 
                 decoded_payload = pyjwt.decode(token, self.key, algorithms=["HS256"]) #Decodificando
-                return True, decoded_payload
+
+                if self.db.users.search.by_id(decoded_payload["id"]):
+
+                    return True, decoded_payload
+                
+                return False, {"message": "Invalid token"}
             
             except pyjwt.ExpiredSignatureError:
+
                 return False, {"message": "Token has expired"}
             
             except pyjwt.InvalidTokenError:

@@ -47,13 +47,14 @@ class Liability_service:
 
         if self.payload[0]:
 
+            request = self.request.get_json()
+
             user_id = self.payload[1]["id"] ; liability = False
-            type = self.request.args.get('type')
+            type = request['type']
         
             if type == "id":
 
-
-                id = self.request.args.get('id')
+                id = request['id'] 
 
                 if id:
                     

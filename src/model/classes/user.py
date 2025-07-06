@@ -26,7 +26,7 @@ class User(UserMixin):
         cpf, 
         phone, 
         email, 
-        password, 
+        password_hash, 
         birthday, 
         id=None, 
         lgpd_consent=None, 
@@ -39,7 +39,7 @@ class User(UserMixin):
         self.cpf: str = cpf
         self.phone: str = phone
         self.email: str = email
-        self.password: str = password
+        self.password_hash: str = password_hash
         self.birthday: str = birthday
         self.lgpd_consent: bool = lgpd_consent
         self.created_at: datetime = created_at

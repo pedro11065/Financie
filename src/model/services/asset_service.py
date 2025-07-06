@@ -22,7 +22,7 @@ class Asset_service:
 
             request = self.request.get_json()
 
-            asset = Transaction(name=request["name"], 
+            asset = Asset(name=request["name"], 
                 description=request["description"], 
                 category=request["category"],
                 status=request["status"],
@@ -47,12 +47,15 @@ class Asset_service:
 
         if self.payload[0]:
 
+
+            request = self.request.get_json()
+
             user_id = self.payload[1]["id"]  ; asset = False
-            type = self.request.args.get('type')
+            type = request['type']
         
             if type == "id":
 
-                id = self.request.args.get('id') 
+                id = request['id'] 
 
                 if id:
 

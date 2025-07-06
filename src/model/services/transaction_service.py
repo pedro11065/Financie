@@ -22,6 +22,8 @@ class transaction_service:
 
             request = self.request.get_json()
 
+            
+
             transaction = Transaction(name=request["name"], 
                 description=request["description"], 
                 category=request["category"],
