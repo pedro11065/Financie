@@ -1,6 +1,5 @@
 from src import *
 from flask_cors import CORS
-from flask import render_template
 from flask_login import LoginManager
 from src.model.auth.userloader import load_user  # Import the refactored function
 
@@ -10,16 +9,18 @@ app.app_context().push()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'auth_user_api.login'  # Redirect to login route if not authenticated
+login_manager.login_view = 'auth_user_api.login' 
 login_manager.user_loader(load_user)
 
-@app.errorhandler(404) # Manipulador para o erro 404
+@app.errorhandler(404) 
 def page_not_found(e):
-    return render_template('errors/404.html'), 404
+    #return render_template('errors/404.html'), 404
+    return {"status": False, "message":"Página não encontrada."}, 500
 
-@app.errorhandler(403) # Manipulador para o erro 403
+@app.errorhandler(403)
 def page_permission(e):
-    return render_template('errors/403.html'), 403
+    #return render_template('errors/403.html'), 403
+    return {"status": False, "message":"Sem permissão de acesso."}, 500
 
 if __name__ == '__main__':
     # Apenas irá rodar o aplicativo caso você inicie o arquivo main. 

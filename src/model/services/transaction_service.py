@@ -4,12 +4,12 @@ import bcrypt, traceback, uuid, os
 
 from datetime import datetime
 
-from src.model.classes.asset import *
+from src.model.classes.transaction import *
 
-class Asset_service:
+class transaction_service:
 
     def __init__(self, payload, request):
-        self.db = Db("assets")
+        self.db = Db("transactions")
         self.payload = payload
         self.request = request
 
@@ -22,7 +22,7 @@ class Asset_service:
 
             request = self.request.get_json()
 
-            asset = Transaction(name=request["name"], 
+            transaction = Transaction(name=request["name"], 
                 description=request["description"], 
                 category=request["category"],
                 status=request["status"],
@@ -31,8 +31,8 @@ class Asset_service:
                 created_at=datetime.now(),
                 id=uuid.uuid4())
             
-            if self.db.assets.create.asset(asset):
-                return {"status": True, "message":"Asset created successfully!"}, 201
+            if self.db.transactions.create.transaction(transaction):
+                return {"status": True, "message":"Transaction created successfully!"}, 201
             else:
                 return {"status": False, "message":"Internal server error."}, 500
             
@@ -47,46 +47,47 @@ class Asset_service:
 
         if self.payload[0]:
 
-            user_id = self.payload[1]["id"]  ; asset = False
+            user_id = self.payload[1]["id"] ; transaction = False
             type = self.request.args.get('type')
         
             if type == "id":
 
-                id = self.request.args.get('id') 
+
+                id = self.request.args.get('id')
 
                 if id:
+                    
+                    transaction = self.db.transactions.search.by_id(user_id, id)
 
-                    asset = self.db.assets.search.by_id(user_id, id)
+                if transaction:
 
-                if asset:
+                    transaction.created_at = transaction.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                    transaction.updated_at = transaction.updated_at.strftime('%Y-%m-%d %H:%M:%S')
 
-                    asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
-                    asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+                    transaction = transaction.__dict__
 
-                    asset = asset.__dict__
-
-                    return {"status": True, "data": asset}, 200
+                    return {"status": True, "data": transaction}, 200
                 
-                return {"status": False, "message":"Asset not finded."}, 404 
+                return {"status": False, "message":"transaction not finded."}, 404 
                 
          
         #-------------------------------------------------------------------------------
 
             if type == "user":
 
-                assets = self.db.assets.search.by_user_id(user_id)
+                transactions = self.db.transactions.search.by_user_id(user_id)
 
-                if assets:
+                if transactions:
 
-                    for i, asset in enumerate(assets):
-                        asset.created_at = asset.created_at.strftime('%Y-%m-%d %H:%M:%S')
-                        asset.updated_at = asset.updated_at.strftime('%Y-%m-%d %H:%M:%S')
-                        assets[i] = asset.__dict__
+                    for i, transaction in enumerate(transactions):
+                        transaction.created_at = transaction.created_at.strftime('%Y-%m-%d %H:%M:%S')
+                        transaction.updated_at = transaction.updated_at.strftime('%Y-%m-%d %H:%M:%S')
+                        transactions[i] = transaction.__dict__
 
-                    return {"status": True, "data": assets}, 200
+                    return {"status": True, "data": transactions}, 200
 
 
-                return {"status": False, "message":"Asset not finded."}, 404    
+                return {"status": False, "message":"Transaction not finded."}, 404    
 
             return  {"status": False, "message":"Invalid type."}, 404  
         
@@ -103,19 +104,19 @@ class Asset_service:
             request = self.request.get_json()
 
             user_id = self.payload[1]["id"] 
-            asset_id = request['id']  
+            transaction_id = request['id']  
             column = request['column']
             value = request["value"]
 
             if column in columns:
 
-                if self.db.assets.update.asset(user_id, asset_id, column, value):
-                    return {"status": True, "message":"Asset updated successfully!"}, 201
-
-                return {"status": False, "message":"Asset not finded."}, 500
-
+                if self.db.transactions.update.transaction(user_id, transaction_id, column, value):
+                    return {"status": True, "message":"transaction updated successfully!"}, 201
+                
+                return {"status": False, "message":"Transaction not finded."}, 500
+            
             return {"status": False, "message":"Invalid column."}, 405
-          
+
         return {"status": False, "message":self.payload[1]["message"]}, 405 
 
 
@@ -129,11 +130,11 @@ class Asset_service:
             request = self.request.get_json()
 
             user_id = self.payload[1]["id"] 
-            asset_id = request['id'] 
+            transaction_id = request['id'] 
 
-            if self.db.assets.delete.asset(user_id, asset_id):
-                return {"status": True, "message":"Asset deleted successfully!"}, 201
+            if self.db.transactions.delete.transaction(user_id, transaction_id):
+                return {"status": True, "message":"Transaction deleted successfully!"}, 201
             else:
-                return {"status": False, "message":"Asset not finded."}, 500
+                return {"status": False, "message":"Transaction not finded."}, 500
 
         return {"status": False, "message":self.payload[1]["message"]}, 405 

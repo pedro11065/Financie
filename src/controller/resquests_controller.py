@@ -7,4 +7,4 @@ class Api_request:
     def __init__(self, payload, request):
         self.user = User_service(payload, request)
         self.asset = Asset_service(payload, request)
-        self.liability = Liability_service(payload, request)
+        self.transaction = Liability_service(payload, request)

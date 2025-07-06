@@ -35,12 +35,12 @@ class Users:
         def __init__(self, parent):        
             self.parent = parent
         
-        def user(self, user_data):
+        def user(self, user_obj):
 
             try:
                 
-                user_data.encrypt()
-                self.parent.session.add(user_data.self_to_table())
+                user_obj.encrypt()
+                self.parent.session.add(user_obj.self_to_table())
                 self.parent.session.commit()
 
                 print(Fore.GREEN + Style.BRIGHT + "User created successfully!" + Style.RESET_ALL)

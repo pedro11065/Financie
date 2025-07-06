@@ -20,7 +20,20 @@ from flask_login import UserMixin
 
 class User(UserMixin):
 
-    def __init__(self, fullname, cpf, phone, email, password, birthday, id=None, lgpd_consent=None, created_at=None, updated_at=None, deleted_at=None):
+    def __init__(
+        self, 
+        fullname, 
+        cpf, 
+        phone, 
+        email, 
+        password, 
+        birthday, 
+        id=None, 
+        lgpd_consent=None, 
+        created_at=None, 
+        updated_at=None, 
+        deleted_at=None):
+        
         self.id: str = id
         self.fullname: str = fullname
         self.cpf: str = cpf

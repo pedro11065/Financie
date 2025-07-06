@@ -2,6 +2,7 @@ from flask import Flask
 from .controller.modules.user_requests import user_api_request
 from .controller.modules.asset_requests import asset_api_request
 from .controller.modules.liabilities_requests import liability_api_request
+from .controller.modules.transactions_requests import transaction_api_request
 
 def create_app():
     app = Flask(__name__)

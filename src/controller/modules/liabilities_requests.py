@@ -8,7 +8,7 @@ import os
 liability_api_request = Blueprint('auth_liability_api', __name__, template_folder='templates', static_folder='static')
 
 # -------------------------------------------------------------------------------------
-
+@login_required
 @liability_api_request.route('/create', methods=['POST'])
 def create():
 
@@ -17,10 +17,10 @@ def create():
 
     api_request = Api_request(payload, request)
 
-    return api_request.liability.create() 
+    return api_request.transaction.create() 
 
 # -------------------------------------------------------------------------------------
-
+@login_required
 @liability_api_request.route(f'/id', methods=['GET'])
 def search():
 
@@ -29,10 +29,10 @@ def search():
 
     api_request = Api_request(payload, request)
 
-    return api_request.liability.search()
+    return api_request.transaction.search()
 
 # -------------------------------------------------------------------------------------
-
+@login_required
 @liability_api_request.route(f'/update', methods=['PUT'])
 def update():
 
@@ -41,10 +41,10 @@ def update():
 
     api_request = Api_request(payload, request)
 
-    return api_request.liability.update()
+    return api_request.transaction.update()
 
 # -------------------------------------------------------------------------------------
-
+@login_required
 @liability_api_request.route(f'/delete', methods=['DELETE'])
 def delete():
 
@@ -53,4 +53,4 @@ def delete():
 
     api_request = Api_request(payload, request)
 
-    return api_request.liability.delete()
+    return api_request.transaction.delete()
