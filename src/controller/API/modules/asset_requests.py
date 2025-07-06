@@ -1,14 +1,15 @@
 from flask import Blueprint, request, render_template, redirect, session, jsonify
 from flask_login import logout_user, login_required
 
-from src.controller.resquests_controller import Api_request
+from src.controller.API.resquests_controller import Api_request
 from src.model.auth.JWT import *
 
-transaction_api_request = Blueprint('auth_transaction_api', __name__, template_folder='templates', static_folder='static')
+import os
+asset_api_request = Blueprint('auth_asset_api', __name__, template_folder='templates', static_folder='static')
 
 # -------------------------------------------------------------------------------------
 @login_required
-@transaction_api_request.route('/create', methods=['POST'])
+@asset_api_request.route('/create', methods=['POST'])
 def create():
 
     token = request.headers.get('Authorization')
@@ -16,11 +17,11 @@ def create():
 
     api_request = Api_request(payload, request)
 
-    return api_request.transaction.create() 
+    return api_request.asset.create() 
 
 # -------------------------------------------------------------------------------------
 @login_required
-@transaction_api_request.route(f'/id', methods=['GET'])
+@asset_api_request.route(f'/id', methods=['GET'])
 def search():
 
     token = request.headers.get('Authorization')
@@ -28,11 +29,11 @@ def search():
 
     api_request = Api_request(payload, request)
 
-    return api_request.transaction.search()
+    return api_request.asset.search()
 
 # -------------------------------------------------------------------------------------
 @login_required
-@transaction_api_request.route(f'/update', methods=['PUT'])
+@asset_api_request.route(f'/update', methods=['PUT'])
 def update():
 
     token = request.headers.get('Authorization')
@@ -40,11 +41,11 @@ def update():
 
     api_request = Api_request(payload, request)
 
-    return api_request.transaction.update()
+    return api_request.asset.update()
 
 # -------------------------------------------------------------------------------------
 @login_required
-@transaction_api_request.route(f'/delete', methods=['DELETE'])
+@asset_api_request.route(f'/delete', methods=['DELETE'])
 def delete():
 
     token = request.headers.get('Authorization')
@@ -52,4 +53,4 @@ def delete():
 
     api_request = Api_request(payload, request)
 
-    return api_request.transaction.delete()
+    return api_request.asset.delete()

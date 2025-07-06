@@ -3,7 +3,7 @@ from flask_login import logout_user, login_required
 
 from src.model.auth.JWT import *
 
-from src.controller.resquests_controller import Api_request
+from src.controller.API.resquests_controller import Api_request
 
 #from src import cache
 
