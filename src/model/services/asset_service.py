@@ -9,7 +9,7 @@ from src.model.classes.asset import *
 class Asset_service:
 
     def __init__(self, payload, request):
-        self.db = Db("assets")
+        self.db = Db()
         self.payload = payload
         self.request = request
 

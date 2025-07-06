@@ -5,16 +5,12 @@ from src.model.db.tables.transactions import Transactions
 
 class Db:
 
-    def __init__(self, type):
+    def __init__(self):
         
-        if type == 'users':
-            self.users : object = Users()
+        self.users : object = Users()
 
-        if type == 'assets':
-            self.assets: object = Assets()
-       
-        if type == 'liabilities':
-            self.transactions: object = Liabilities()
+        self.assets: object = Assets()
 
-        if type == 'transactions':
-            self.transactions: object = Transactions()
+        self.transactions: object = Liabilities()
+
+        self.transactions: object = Transactions()

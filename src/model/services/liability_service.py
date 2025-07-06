@@ -9,7 +9,7 @@ from src.model.classes.liability import *
 class Liability_service:
 
     def __init__(self, payload, request):
-        self.db = Db("liabilities")
+        self.db = Db()
         self.payload = payload
         self.request = request
 

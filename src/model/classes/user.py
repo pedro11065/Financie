@@ -55,7 +55,7 @@ class User(UserMixin):
             cpf=self.cpf,  # Directly store the binary data
             phone=self.phone,  # Directly store the binary data
             email=self.email,
-            password_hash=bcrypt.hashpw(self.password.encode(), bcrypt.gensalt()).decode(),
+            password_hash=bcrypt.hashpw(self.password_hash.encode(), bcrypt.gensalt()).decode(),
             birthday=self.birthday,
             lgpd_consent=True,
             created_at=datetime.now(),

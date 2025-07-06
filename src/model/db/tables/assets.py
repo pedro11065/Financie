@@ -112,7 +112,6 @@ class Assets:
                 print(Fore.GREEN + Style.BRIGHT + "Asset search by user id ended successfully!" + Style.RESET_ALL)
 
                 if search:  
-                    print(Fore.GREEN + Style.BRIGHT + f"{len(search)} Asset(s) founded!" + Style.RESET_ALL)
 
                     assets = []
 
@@ -131,6 +130,8 @@ class Assets:
                             deleted_at=record.deleted_at
                         )
                         assets.append(asset)
+
+                    print(Fore.GREEN + Style.BRIGHT + f"{len(search)} Asset(s) founded!" + Style.RESET_ALL)
 
                     return assets 
 

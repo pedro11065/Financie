@@ -3,6 +3,7 @@ from datetime import date
 from src.model.db.DbController import Db
 
 import os
+from datetime import datetime, timedelta
 
 class Auth0:
 
@@ -12,7 +13,7 @@ class Auth0:
         
         key_path: str = r"src\model\auth\key.key"
         self.key = self.load_key(key_path)
-        self.db = Db("users")
+        self.db = Db()
 
     @staticmethod
     def load_key(file_path) -> bytes:
@@ -42,9 +43,16 @@ class Auth0:
 
                 decoded_payload = pyjwt.decode(token, self.key, algorithms=["HS256"]) #Decodificando
 
-                if self.db.users.search.by_id(decoded_payload["id"]):
+                creation_str = decoded_payload.get("creation")
 
-                    return True, decoded_payload
+                if creation_str:
+                    creation_date = datetime.fromisoformat(creation_str)
+
+                    if datetime.now() - creation_date <= timedelta(hours=24):
+                        if self.db.users.search.by_id(decoded_payload["id"]):
+                            return True, decoded_payload
+
+                    return False, {"message": "Token has expired"}
                 
                 return False, {"message": "Invalid token"}
             

@@ -9,7 +9,7 @@ from src.model.classes.transaction import *
 class transaction_service:
 
     def __init__(self, payload, request):
-        self.db = Db("transactions")
+        self.db = Db()
         self.payload = payload
         self.request = request
 
@@ -64,7 +64,7 @@ class transaction_service:
 
                 # Caso 2: Pagamento de uma dívida/passivo
                 # Saldo = Saldo - valor // Quitação de um passivo ou de uma parcela 
-                elif request["liability_id"] != "" and request["asset_id"] == "":
+                elif request["liability_id"] != "" and request["asset_id"] == "": # Por enquanto sem sistema de parcelamento
 
                     None
 

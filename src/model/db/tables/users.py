@@ -45,16 +45,18 @@ class Users:
 
                 print(Fore.GREEN + Style.BRIGHT + "User created successfully!" + Style.RESET_ALL)
 
-                return True       
+                return True, "User created successfully!"
             
             except Exception as e:
 
-                print(str(e.orig))
-                print(traceback.format_exc())
-                print(Fore.RED + Style.BRIGHT + "Error reading or searching user!" + Style.RESET_ALL)
-
-                return False
-            
+                if hasattr(e, 'orig') and 'already exists.' in str(e.orig):
+                    print(Fore.RED + Style.BRIGHT + "User already exists!" + Style.RESET_ALL)
+                    return False, "User already exists!"
+                
+                else:
+                    print(Fore.RED + Style.BRIGHT + "Error creating user!" + Style.RESET_ALL)
+                    return False, "Error creating user!"
+                
             finally:
                
                 self.parent.session.close() ; self.parent.engine.dispose()
@@ -74,8 +76,6 @@ class Users:
 
                 search = self.parent.session.query(table_users).filter_by(id=id).first()
 
-                print(Fore.GREEN + Style.BRIGHT + "User search by id ended successfully!" + Style.RESET_ALL)
-
                 user = User(
                     id=str(search.id),
                     fullname=search.full_name,
@@ -92,7 +92,9 @@ class Users:
                 
                 user.decrypt()
 
-                return user
+                print(Fore.GREEN + Style.BRIGHT + "User search by id ended successfully!" + Style.RESET_ALL)
+
+                return user, "User search by id ended successfully!"
 
             except Exception as e:
 
@@ -100,7 +102,7 @@ class Users:
                 print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error searching user!" + Style.RESET_ALL)
 
-                return False
+                return False, "Error searching user!"
             
             finally:
                 self.parent.session.close() ; self.parent.engine.dispose()
@@ -111,11 +113,8 @@ class Users:
 
                 search = self.parent.session.query(table_users).filter_by(email=email).first()
 
-                print(Fore.GREEN + Style.BRIGHT + "User search by email ended successfully!" + Style.RESET_ALL)
-
                 if search is not None: 
 
-                    print(Fore.GREEN + Style.BRIGHT + "User founded!" + Style.RESET_ALL)
 
                     user = User(
                         id=str(search.id),
@@ -123,7 +122,7 @@ class Users:
                         cpf=search.cpf,
                         phone=search.phone,
                         email=search.email,
-                        password=search.password_hash,
+                        password_hash=search.password_hash,
                         birthday=search.birthday,
                         lgpd_consent=search.lgpd_consent,
                         created_at=search.created_at,
@@ -133,9 +132,13 @@ class Users:
 
                     user.decrypt()
 
-                    return user
-                
-                else: print(Fore.RED + Style.BRIGHT + "User not founded." + Style.RESET_ALL)
+                    print(Fore.GREEN + Style.BRIGHT + "User founded!" + Style.RESET_ALL)
+
+                    return user, "User founded!"
+            
+                print(Fore.RED + Style.BRIGHT + "User not founded." + Style.RESET_ALL)
+                return False, "User not founded!"
+
 
             except Exception as e:
 
