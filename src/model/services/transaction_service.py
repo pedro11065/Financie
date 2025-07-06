@@ -24,42 +24,7 @@ class transaction_service:
 
             #-----------------------------------------------------------------------
 
-            # TRANSACTION TYPE: EXIT (Money going out)
-            if request["transaction_type"] == "exit":
-                if request["liability_id"] == "" and request["asset_id"] == "":
-                    # Case 1: Direct expense (no asset or liability involved)
-                    None
-                elif request["liability_id"] != "" and request["asset_id"] == "":
-                    # Case 2: Paying off a liability/debt
-                    None
-                elif request["liability_id"] == "" and request["asset_id"] != "":
-                    # Case 3: Paying for an asset
-                    None
-                elif request["liability_id"] != "" and request["asset_id"] != "":
-                    # Case 4: Paying for an asset using a liability (e.g., credit card)
-                    None
-
-            # TRANSACTION TYPE: ENTRY (Money coming in)
-            elif request["transaction_type"] == "entry":
-                if request["asset_id"] == "" and request["liability_id"] == "":
-                    # Case 1: Direct income (salary, dividends, etc.)
-                    None
-                elif request["asset_id"] != "" and request["liability_id"] == "":
-                    # Case 2: Income from an asset (rent, investment return, etc.)
-                    None
-                elif request["asset_id"] == "" and request["liability_id"] != "":
-                    # Case 3: Taking on new liability (loan received)
-                    None
-                elif request["asset_id"] != "" and request["liability_id"] != "":
-                    # Case 4: Asset sold with liability transfer
-                    None
-
-            # TRANSACTION TYPE: TRANSFER
-            elif request["transaction_type"] == "transfer":
-                # Case 1: Transfer between accounts or assets
-                None
-
-            transaction = Transaction(
+            transaction = Transaction( #Indempendente do tipo de transação, uma transação vai ser criada/registrada
 
                 id=uuid.uuid4(),
 
@@ -77,14 +42,81 @@ class transaction_service:
                 payment_status=request["payment_status"], 
                 currency=request["currency"],
                 amount=request["amount"],
-                created_at=datetime.now()
-                )
-                
+
+                created_at=datetime.now(),
+                updated_at=datetime.now())
+            
+            #-----------------------------------------------------------------------
+
+            #O ativo ou passivo vai ser selecionado no front -> id dele
+
+
+            # TIPO DE TRANSAÇÃO: SAÍDA (Dinheiro saindo)
+            if request["transaction_type"] == "exit":
+
+                # Caso 1: Despesa direta (sem ativo ou passivo envolvido)
+                # Saldo = Saldo - valor // Transação padrão de pagamento
+                if request["liability_id"] == "" and request["asset_id"] == "":
+
+                    if self.db.transactions.create.transaction(transaction):
+                        return {"status": True, "message":"Transaction created successfully!"}, 201
+                    return {"status": False, "message":"Internal server error."}, 500
+
+                # Caso 2: Pagamento de uma dívida/passivo
+                # Saldo = Saldo - valor // Quitação de um passivo ou de uma parcela 
+                elif request["liability_id"] != "" and request["asset_id"] == "":
+
+                    None
+
+                # Caso 3: Pagamento por um ativo
+                # Saldo = Saldo - valor // Novo ativo
+                elif request["liability_id"] == "" and request["asset_id"] != "":
+
+                    None
+
+                # Caso 4: Pagamento de um ativo usando um passivo (ex: cartão de crédito)
+                # ---
+                # elif request["liability_id"] != "" and request["asset_id"] != "":
+                    #None
+
+            # TIPO DE TRANSAÇÃO: ENTRADA (Dinheiro entrando)
+            elif request["transaction_type"] == "entry":
+
+                # Caso 1: Renda direta (salário, dividendos, etc.)
+                # Saldo = valor + saldo
+                if request["asset_id"] == "" and request["liability_id"] == "":
+
+                    None
+
+                # Caso 2: Renda de um ativo (aluguel, retorno de investimento, etc.)
+                # Saldo = valor + saldo
+                elif request["asset_id"] != "" and request["liability_id"] == "":
+
+                    None
+
+                # Caso 3: Assumindo novo passivo (empréstimo recebido)
+                # Saldo = valor + saldo //Novo passivo
+                elif request["asset_id"] == "" and request["liability_id"] != "":
+
+                    None
+
+                # Caso 4: Ativo vendido com transferência de passivo
+                # Saldo = valor + saldo // ativo por passivo
+                elif request["asset_id"] != "" and request["liability_id"] != "":
+
+                    None
+
+            # # TIPO DE TRANSAÇÃO: TRANSFERÊNCIA
+            # elif request["transaction_type"] == "transfer":
+            #     # Caso 1: Transferência entre contas ou ativos
+            #     # ---
+            #     None
+
+
             
             if self.db.transactions.create.transaction(transaction):
                 return {"status": True, "message":"Transaction created successfully!"}, 201
-            else:
-                return {"status": False, "message":"Internal server error."}, 500
+            return {"status": False, "message":"Internal server error."}, 500
             
         return {"status": False, "message":self.payload[1]["message"]}, 405 
         
