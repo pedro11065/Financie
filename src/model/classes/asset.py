@@ -48,7 +48,7 @@ class Asset:
 
         data = table_assets(
 
-            id=uuid.uuid4(),
+            id=self.id,
             user_id=self.user_id,
             name=self.name,
             description=self.description,

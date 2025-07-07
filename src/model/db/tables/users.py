@@ -27,7 +27,6 @@ class Users:
         self.update = self.Update(self)
         self.delete = self.Delete(self)
 
-
 # ==============================================================================
 
     class Create:
@@ -189,6 +188,52 @@ class Users:
                 self.parent.engine.dispose()
 
 
+        #--------------------------------------------------------------------
+
+
+        def balance(self, user_id, value, operation):
+
+            try:
+
+                if operation == "sum":
+                
+                    sql = (
+                        update(table_users)
+                        .where(table_users.id == user_id)
+                        .values(balance=table_users.balance + value)
+                    )
+
+
+                elif operation == "deduct": #EU SEI que um else é mais que o suficiente, é só para faciliar o entendimento
+
+                    sql = (
+                        update(table_users)
+                        .where(table_users.id == user_id)
+                        .values(balance=table_users.balance - value)
+                    )
+
+
+                self.parent.session.execute(sql)  
+                self.parent.session.commit()
+
+                print(Fore.GREEN + Style.BRIGHT + f"User balance updated successfully!" + Style.RESET_ALL)
+
+                return True
+
+            except SQLAlchemyError as e:
+                
+                logging.error(str(e))
+                print(Fore.RED + Style.BRIGHT + "Error updating balance!" + Style.RESET_ALL)
+                print(e)
+
+                return False
+
+            finally:
+                self.parent.session.close()
+                self.parent.engine.dispose()
+
+
+
 # ==============================================================================
 
     class Delete:
@@ -223,3 +268,7 @@ class Users:
             
             finally:
                 self.parent.session.close() ; self.parent.engine.dispose()
+
+
+# ==============================================================================
+

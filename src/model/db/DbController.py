@@ -11,6 +11,6 @@ class Db:
 
         self.assets: object = Assets()
 
-        self.transactions: object = Liabilities()
+        self.liabilities: object = Liabilities()
 
         self.transactions: object = Transactions()

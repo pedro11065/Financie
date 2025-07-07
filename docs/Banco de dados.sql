@@ -8,6 +8,7 @@ CREATE TABLE users (
     cpf BYTEA UNIQUE,
     phone BYTEA UNIQUE,
     lgpd_consent BOOLEAN DEFAULT FALSE NOT NULL,
+    balance DECIMAL(15,2) NOT NULL DEFAULT 0.00,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE,
     deleted_at TIMESTAMP WITH TIME ZONE
@@ -76,6 +77,7 @@ CREATE TABLE transactions (
     liability_id UUID REFERENCES liabilities(id) ON DELETE SET NULL,
     credit_card_id UUID REFERENCES credit_cards(id) ON DELETE SET NULL,
     statement_id UUID REFERENCES statements(id) ON DELETE SET NULL,
+    transaction_type VARCHAR(20) NOT NULL,
     payment_method VARCHAR(20) NOT NULL,
     payment_status VARCHAR(20) NOT NULL,
     currency CHAR(3) NOT NULL,

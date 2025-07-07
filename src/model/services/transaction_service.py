@@ -2,16 +2,23 @@ from src.model.db.DbController import Db
 from src.model.auth.JWT import Auth0
 import bcrypt, traceback, uuid, os
 
+from src.model.classes.asset import *
+from src.model.classes.liability import *
+
 from datetime import datetime
 
 from src.model.classes.transaction import *
 
-class transaction_service:
+class Transaction_service:
 
     def __init__(self, payload, request):
         self.db = Db()
         self.payload = payload
         self.request = request
+
+        self.user_id : str
+        self.liability_id : str
+        self.asset_id : str
 
 
     # ==============================================================================
@@ -22,100 +29,137 @@ class transaction_service:
 
             request = self.request.get_json()
 
+            self.user_id = self.payload[1]["id"]
+            self.asset_id = request["asset_id"]
+            self.liability_id = request["liability_id"]
+
             #-----------------------------------------------------------------------
 
-            transaction = Transaction( #Indempendente do tipo de transação, uma transação vai ser criada/registrada
 
-                id=uuid.uuid4(),
-
-                user_id=self.payload[1]["id"],
-
-                asset_id=request["asset_id"],
-                liability_id=request["liability_id"],
-
-                credit_card_id=request["credit_card_id"], 
-                
-                statement_id=request["statement_id"], 
-
-                transaction_type=request["transaction_type"],
-                payment_method=request["payment_method"],
-                payment_status=request["payment_status"], 
-                currency=request["currency"],
-                amount=request["amount"],
-
-                created_at=datetime.now(),
-                updated_at=datetime.now())
             
             #-----------------------------------------------------------------------
 
             #O ativo ou passivo vai ser selecionado no front -> id dele
 
-
-            # TIPO DE TRANSAÇÃO: SAÍDA (Dinheiro saindo)
-            if request["transaction_type"] == "exit":
-
-                # Caso 1: Despesa direta (sem ativo ou passivo envolvido)
-                # Saldo = Saldo - valor // Transação padrão de pagamento
-                if request["liability_id"] == "" and request["asset_id"] == "":
-
-                    if self.db.transactions.create.transaction(transaction):
-                        return {"status": True, "message":"Transaction created successfully!"}, 201
-                    return {"status": False, "message":"Internal server error."}, 500
-
-                # Caso 2: Pagamento de uma dívida/passivo
-                # Saldo = Saldo - valor // Quitação de um passivo ou de uma parcela 
-                elif request["liability_id"] != "" and request["asset_id"] == "": # Por enquanto sem sistema de parcelamento
-
-                    None
-
-                # Caso 3: Pagamento por um ativo
-                # Saldo = Saldo - valor // Novo ativo
-                elif request["liability_id"] == "" and request["asset_id"] != "":
-
-                    None
-
-                # Caso 4: Pagamento de um ativo usando um passivo (ex: cartão de crédito)
-                # ---
-                # elif request["liability_id"] != "" and request["asset_id"] != "":
-                    #None
-
-            # TIPO DE TRANSAÇÃO: ENTRADA (Dinheiro entrando)
-            elif request["transaction_type"] == "entry":
-
-                # Caso 1: Renda direta (salário, dividendos, etc.)
-                # Saldo = valor + saldo
-                if request["asset_id"] == "" and request["liability_id"] == "":
-
-                    None
-
-                # Caso 2: Renda de um ativo (aluguel, retorno de investimento, etc.)
-                # Saldo = valor + saldo
-                elif request["asset_id"] != "" and request["liability_id"] == "":
-
-                    None
-
-                # Caso 3: Assumindo novo passivo (empréstimo recebido)
-                # Saldo = valor + saldo //Novo passivo
-                elif request["asset_id"] == "" and request["liability_id"] != "":
-
-                    None
-
-                # Caso 4: Ativo vendido com transferência de passivo
-                # Saldo = valor + saldo // ativo por passivo
-                elif request["asset_id"] != "" and request["liability_id"] != "":
-
-                    None
-
-            # # TIPO DE TRANSAÇÃO: TRANSFERÊNCIA
-            # elif request["transaction_type"] == "transfer":
-            #     # Caso 1: Transferência entre contas ou ativos
-            #     # ---
-            #     None
+            try:
+                # TIPO DE TRANSAÇÃO: SAÍDA (Dinheiro saindo)
+                if request["transaction_type"] == "payment":
 
 
+                    # Caso 1: Despesa direta (sem ativo ou passivo envolvido)              
+                    if self.liability_id == None and self.asset_id == None and request["item"] == False:  # Saldo = Saldo - valor // Transação padrão de pagamento
+
+                        self.db.users.update.balance(self.user_id, request["amount"], "deduct")
+
+
+                    # Caso 2: Pagamento de uma dívida/passivo
+                    elif self.liability_id != None and self.asset_id == None: # Saldo = Saldo - valor // Quitação de um passivo ou de uma parcela 
+                    # Por enquanto sem sistema de parcelamento
+                        
+                        self.db.users.update.balance(self.user_id, request["amount"], "deduct")
+                        self.db.liabilities.delete.liability(self.user_id, self.asset_id,)
+
+
+                    # Caso 3: Pagamento por um ativo
+                    elif self.liability_id == None and self.asset_id == None and request["item"] == True: # Saldo = Saldo - valor // Novo ativo
+                        
+                        asset_obj = Asset(name=request["name"], 
+                            description=request["description"], 
+                            category=request["category"],
+                            status=request["status"],
+                            location=request["location"], 
+                            user_id=self.payload[1]["id"],
+                            created_at=datetime.now(),
+                            id=uuid.uuid4())
+                        
+                        request["asset_id"] = asset_obj.id
+                        self.db.users.update.balance(self.user_id, request["amount"], "deduct")
+                        self.db.assets.create.asset(asset_obj)
+                        
+
+                    # Caso 4: Pagamento de um ativo usando um passivo (ex: cartão de crédito)
+                    # ---
+                    # elif request["liability_id"] != "" and request["asset_id"] != "":
+                        #None
+
+
+                # TIPO DE TRANSAÇÃO: ENTRADA (Dinheiro entrando)
+                elif request["transaction_type"] == "receivement":
+
+                    # Caso 1: Renda direta (salário, dividendos, etc.)  
+                    if self.asset_id == None and self.liability_id == None: # Saldo = valor + saldo
+                        
+                        self.db.users.update.balance(self.user_id, request["amount"], "sum")
+                        
+
+                    # Caso 2: Renda de um ativo (aluguel, retorno de investimento, etc.)          
+                    elif self.asset_id != None and self.liability_id == None: # Saldo = valor + saldo
+
+                        self.db.users.update.balance(self.user_id, request["amount"], "sum") 
+
+
+                    # Caso 3: Assumindo novo passivo (empréstimo recebido)  
+                    elif self.asset_id == None and self.liability_id != None: # Saldo = valor + saldo //Novo passivo
+
+                        liability_obj = Liability(name=request["name"], 
+                            description=request["description"], 
+                            category=request["category"],
+                            status=request["status"],
+                            location=request["location"], 
+                            user_id=self.payload[1]["id"],
+                            created_at=datetime.now(),
+                            id=uuid.uuid4())
+                        
+                        
+                        request["liability_id"] = liability_obj.id
+                        self.db.users.update.balance(self.user_id, request["amount"], "sum")
+                        self.db.liability.create.liability(liability_obj)
+
+
+                    # Caso 4: Ativo vendido com transferência de passivo
+                    elif self.asset_id != None and self.liability_id != None: # Saldo = valor + saldo // ativo por passivo
+                        None
+
+
+                # # TIPO DE TRANSAÇÃO: TRANSFERÊNCIA
+                # elif request["transaction_type"] == "transfer":
+                #     # Caso 1: Transferência entre contas ou ativos
+                #     # ---
+                #     None
+
+                print(request["asset_id"])
+                print(request["liability_id"])
+
+                os.system("pause")
+
+
+                transaction_obj = Transaction( #Indempendente do tipo de transação, uma transação vai ser criada/registrada
+
+                    id=uuid.uuid4(),
+
+                    user_id=self.payload[1]["id"],
+
+                    asset_id=request["asset_id"],
+                    liability_id=request["liability_id"],
+
+                    credit_card_id=request["credit_card_id"], 
+                    
+                    statement_id=request["statement_id"], 
+
+                    transaction_type=request["transaction_type"],
+                    payment_method=request["payment_method"],
+                    payment_status=request["payment_status"], 
+                    currency=request["currency"],
+                    amount=request["amount"],
+
+                    created_at=datetime.now(),
+                    updated_at=datetime.now())
             
-            if self.db.transactions.create.transaction(transaction):
-                return {"status": True, "message":"Transaction created successfully!"}, 201
+                if self.db.transactions.create.transaction(transaction_obj):
+                    return {"status": True, "message":"Transaction created successfully!"}, 201
+                
+            except:
+                None
             return {"status": False, "message":"Internal server error."}, 500
             
         return {"status": False, "message":self.payload[1]["message"]}, 405 

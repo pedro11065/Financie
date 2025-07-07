@@ -18,7 +18,7 @@ from sqlalchemy.dialects.postgresql import UUID
 columns = ['name', 'description', 'category', 'status', 'location']
 
 
-class Transaction:
+class Liability:
 
     def __init__(
         self, 
@@ -49,7 +49,7 @@ class Transaction:
 
         data = table_liabilities(
 
-            id=uuid.uuid4(),
+            id=self.id,
             user_id=self.user_id,
             name=self.name,
             description=self.description,

@@ -2,6 +2,7 @@ from sqlalchemy import String
 from sqlalchemy import Date
 from sqlalchemy import Uuid
 from sqlalchemy import LargeBinary
+from sqlalchemy import Float
 
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
@@ -32,7 +33,8 @@ class User(UserMixin):
         lgpd_consent=None, 
         created_at=None, 
         updated_at=None, 
-        deleted_at=None):
+        deleted_at=None,
+        balance=None):
         
         self.id: str = id
         self.fullname: str = fullname
@@ -45,6 +47,7 @@ class User(UserMixin):
         self.created_at: datetime = created_at
         self.updated_at: datetime = updated_at
         self.deleted_at: datetime = deleted_at
+        self.balance: float = balance
 
     def self_to_table(self):
 
@@ -92,6 +95,7 @@ class table_users(Base):
     created_at: Mapped[datetime] = mapped_column(Date, nullable=False)
     updated_at: Mapped[datetime] = mapped_column(Date, nullable=False)
     deleted_at: Mapped[datetime] = mapped_column(Date, nullable=True)
+    balance: Mapped[float] = mapped_column(Float, nullable=False)
 
     #def __repr__(self):
      #   return f'User(id={self.id!r}, fullname={self.fullname!r}, email={self.email!r}, password={self.password!r}, birthday={self.birthday!r}, cpf={self.cpf!r}, phone={self.phone!r}, lgpd_consent={self.lgpd_consent!r}, created_at={self.created_at!r}, updated_at={self.updated_at!r}, deleted_at={self.deleted_at!r})'

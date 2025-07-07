@@ -22,7 +22,7 @@ class Liability_service:
 
             request = self.request.get_json()
 
-            liability = Transaction(name=request["name"], 
+            liability = Liability(name=request["name"], 
                 description=request["description"], 
                 category=request["category"],
                 status=request["status"],
@@ -31,7 +31,7 @@ class Liability_service:
                 created_at=datetime.now(),
                 id=uuid.uuid4())
             
-            if self.db.transactions.create.liability(liability):
+            if self.db.liabilities.create.liability(liability):
                 return {"status": True, "message":"Liability created successfully!"}, 201
             else:
                 return {"status": False, "message":"Internal server error."}, 500
