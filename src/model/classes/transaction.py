@@ -81,12 +81,12 @@ class table_transactions(Base):
 
     __tablename__ = "transactions"
 
-    id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), nullable=False, primary_key=True, default=uuid.uuid4)
-    user_id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), nullable=False, default=uuid.uuid4)
-    asset_id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), nullable=True, default=uuid.uuid4) 
-    liability_id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), nullable=True, default=uuid.uuid4) 
-    credit_card_id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True),nullable=True, default=uuid.uuid4)
-    statement_id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), nullable=True, default=uuid.uuid4) 
+    id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), nullable=False, primary_key=True)
+    user_id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), nullable=False)
+    asset_id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), nullable=True,) 
+    liability_id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), nullable=True) 
+    credit_card_id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True),nullable=True)
+    statement_id: Mapped[Uuid] = mapped_column(UUID(as_uuid=True), nullable=True) 
     transaction_type: Mapped[str] = mapped_column(String(20), nullable=False)
     payment_method: Mapped[str] = mapped_column(String(20), nullable=False)
     payment_status: Mapped[str] = mapped_column(String(20), nullable=False)

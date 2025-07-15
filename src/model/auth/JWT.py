@@ -49,8 +49,8 @@ class Auth0:
                     creation_date = datetime.fromisoformat(creation_str)
 
                     if datetime.now() - creation_date <= timedelta(hours=24):
-                        if self.db.users.search.by_id(decoded_payload["id"]):
-                            return True, decoded_payload
+                        #if self.db.users.search.by_id(decoded_payload["id"]): # Verifica se o usuário existe ou não
+                        return True, decoded_payload
 
                     return False, {"message": "Token has expired"}
                 

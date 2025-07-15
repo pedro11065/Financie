@@ -126,7 +126,7 @@ class Transactions:
                             id=record.id,
                             user_id=record.user_id,
                             asset_id=record.asset_id,
-                            liability_id=record.liability,
+                            liability_id=record.liability_id,
                             credit_card_id=record.credit_card_id,
                             statement_id=record.statement_id,
                             transaction_type=record.transaction_type,

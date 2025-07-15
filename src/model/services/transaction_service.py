@@ -14,7 +14,7 @@ class Transaction_service:
     def __init__(self, payload, request):
         self.db = Db()
         self.payload = payload
-        self.request = request
+        self.request = request.get_json()
 
         self.user_id : str
         self.liability_id : str
@@ -27,11 +27,10 @@ class Transaction_service:
 
         if self.payload[0]:
 
-            request = self.request.get_json()
 
             self.user_id = self.payload[1]["id"]
-            self.asset_id = request["asset_id"]
-            self.liability_id = request["liability_id"]
+            self.asset_id = self.request["asset_id"]
+            self.liability_id = self.request["liability_id"]
 
             #-----------------------------------------------------------------------
 
@@ -43,37 +42,37 @@ class Transaction_service:
 
             try:
                 # TIPO DE TRANSAÇÃO: SAÍDA (Dinheiro saindo)
-                if request["transaction_type"] == "payment":
+                if self.request["transaction_type"] == "payment":
 
 
                     # Caso 1: Despesa direta (sem ativo ou passivo envolvido)              
-                    if self.liability_id == None and self.asset_id == None and request["item"] == False:  # Saldo = Saldo - valor // Transação padrão de pagamento
+                    if self.liability_id == None and self.asset_id == None and self.request["item"] == False:  # Saldo = Saldo - valor // Transação padrão de pagamento
 
-                        self.db.users.update.balance(self.user_id, request["amount"], "deduct")
+                        self.db.users.update.balance(self.user_id, self.request["amount"], "deduct")
 
 
                     # Caso 2: Pagamento de uma dívida/passivo
                     elif self.liability_id != None and self.asset_id == None: # Saldo = Saldo - valor // Quitação de um passivo ou de uma parcela 
                     # Por enquanto sem sistema de parcelamento
                         
-                        self.db.users.update.balance(self.user_id, request["amount"], "deduct")
+                        self.db.users.update.balance(self.user_id, self.request["amount"], "deduct")
                         self.db.liabilities.delete.liability(self.user_id, self.asset_id,)
 
 
                     # Caso 3: Pagamento por um ativo
-                    elif self.liability_id == None and self.asset_id == None and request["item"] == True: # Saldo = Saldo - valor // Novo ativo
+                    elif self.liability_id == None and self.asset_id == None and self.request["item"] == True: # Saldo = Saldo - valor // Novo ativo
                         
-                        asset_obj = Asset(name=request["name"], 
-                            description=request["description"], 
-                            category=request["category"],
-                            status=request["status"],
-                            location=request["location"], 
+                        asset_obj = Asset(name=self.equest["name"], 
+                            description=self.request["description"], 
+                            category=self.request["category"],
+                            status=self.request["status"],
+                            location=self.request["location"], 
                             user_id=self.payload[1]["id"],
                             created_at=datetime.now(),
                             id=uuid.uuid4())
                         
-                        request["asset_id"] = asset_obj.id
-                        self.db.users.update.balance(self.user_id, request["amount"], "deduct")
+                        self.request["asset_id"] = asset_obj.id
+                        self.db.users.update.balance(self.user_id, self.request["amount"], "deduct")
                         self.db.assets.create.asset(asset_obj)
                         
 
@@ -84,35 +83,38 @@ class Transaction_service:
 
 
                 # TIPO DE TRANSAÇÃO: ENTRADA (Dinheiro entrando)
-                elif request["transaction_type"] == "receivement":
+                elif self.request["transaction_type"] == "receivement":
 
                     # Caso 1: Renda direta (salário, dividendos, etc.)  
                     if self.asset_id == None and self.liability_id == None: # Saldo = valor + saldo
-                        
-                        self.db.users.update.balance(self.user_id, request["amount"], "sum")
+            
+                        self.db.users.update.balance(self.user_id, self.request["amount"], "sum")
                         
 
                     # Caso 2: Renda de um ativo (aluguel, retorno de investimento, etc.)          
                     elif self.asset_id != None and self.liability_id == None: # Saldo = valor + saldo
 
-                        self.db.users.update.balance(self.user_id, request["amount"], "sum") 
+                        self.db.users.update.balance(self.user_id, self.request["amount"], "sum") 
 
 
                     # Caso 3: Assumindo novo passivo (empréstimo recebido)  
                     elif self.asset_id == None and self.liability_id != None: # Saldo = valor + saldo //Novo passivo
 
-                        liability_obj = Liability(name=request["name"], 
-                            description=request["description"], 
-                            category=request["category"],
-                            status=request["status"],
-                            location=request["location"], 
+                        liability_obj = Liability(name=self.request["name"], 
+                            description=self.request["description"], 
+                            category=self.request["category"],
+                            status=self.request["status"],
+                            location=self.request["location"], 
                             user_id=self.payload[1]["id"],
                             created_at=datetime.now(),
                             id=uuid.uuid4())
                         
                         
-                        request["liability_id"] = liability_obj.id
-                        self.db.users.update.balance(self.user_id, request["amount"], "sum")
+                        self.request["liability_id"] = liability_obj.id
+
+                        
+
+                        self.db.users.update.balance(self.user_id, self.request["amount"], "sum")
                         self.db.liability.create.liability(liability_obj)
 
 
@@ -127,11 +129,6 @@ class Transaction_service:
                 #     # ---
                 #     None
 
-                print(request["asset_id"])
-                print(request["liability_id"])
-
-                os.system("pause")
-
 
                 transaction_obj = Transaction( #Indempendente do tipo de transação, uma transação vai ser criada/registrada
 
@@ -139,18 +136,18 @@ class Transaction_service:
 
                     user_id=self.payload[1]["id"],
 
-                    asset_id=request["asset_id"],
-                    liability_id=request["liability_id"],
+                    asset_id=self.request["asset_id"],
+                    liability_id=self.request["liability_id"],
 
-                    credit_card_id=request["credit_card_id"], 
+                    credit_card_id=self.request["credit_card_id"], 
                     
-                    statement_id=request["statement_id"], 
+                    statement_id=self.request["statement_id"], 
 
-                    transaction_type=request["transaction_type"],
-                    payment_method=request["payment_method"],
-                    payment_status=request["payment_status"], 
-                    currency=request["currency"],
-                    amount=request["amount"],
+                    transaction_type=self.request["transaction_type"],
+                    payment_method=self.request["payment_method"],
+                    payment_status=self.request["payment_status"], 
+                    currency=self.request["currency"],
+                    amount=self.request["amount"],
 
                     created_at=datetime.now(),
                     updated_at=datetime.now())
@@ -174,12 +171,12 @@ class Transaction_service:
         if self.payload[0]:
 
             user_id = self.payload[1]["id"] ; transaction = False
-            type = self.request.args.get('type')
+            type = self.request['type']
         
             if type == "id":
 
 
-                id = self.request.args.get('id')
+                id = self.request['id']
 
                 if id:
                     
@@ -199,7 +196,7 @@ class Transaction_service:
          
         #-------------------------------------------------------------------------------
 
-            if type == "user":
+            elif type == "user":
 
                 transactions = self.db.transactions.search.by_user_id(user_id)
 
@@ -227,12 +224,11 @@ class Transaction_service:
 
         if self.payload[0]:
 
-            request = self.request.get_json()
 
             user_id = self.payload[1]["id"] 
-            transaction_id = request['id']  
-            column = request['column']
-            value = request["value"]
+            transaction_id = self.request['id']  
+            column = self.request['column']
+            value = self.request["value"]
 
             if column in columns:
 
@@ -253,10 +249,8 @@ class Transaction_service:
         
         if self.payload[0]:
 
-            request = self.request.get_json()
-
             user_id = self.payload[1]["id"] 
-            transaction_id = request['id'] 
+            transaction_id = self.request['id'] 
 
             if self.db.transactions.delete.transaction(user_id, transaction_id):
                 return {"status": True, "message":"Transaction deleted successfully!"}, 201
