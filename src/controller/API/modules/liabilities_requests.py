@@ -17,7 +17,7 @@ def create():
 
     api_request = Api_request(payload, request)
 
-    return api_request.transaction.create() 
+    return api_request.liability.create() 
 
 # -------------------------------------------------------------------------------------
 @login_required
@@ -29,7 +29,7 @@ def search():
 
     api_request = Api_request(payload, request)
 
-    return api_request.transaction.search()
+    return api_request.liability.search()
 
 # -------------------------------------------------------------------------------------
 @login_required
@@ -41,7 +41,7 @@ def update():
 
     api_request = Api_request(payload, request)
 
-    return api_request.transaction.update()
+    return api_request.liability.update()
 
 # -------------------------------------------------------------------------------------
 @login_required
@@ -53,4 +53,4 @@ def delete():
 
     api_request = Api_request(payload, request)
 
-    return api_request.transaction.delete()
+    return api_request.liability.delete()

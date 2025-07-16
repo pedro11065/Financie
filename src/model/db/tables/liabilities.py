@@ -77,7 +77,7 @@ class Liabilities:
 
                 print(Fore.GREEN + Style.BRIGHT + "Liability search by id ended successfully!" + Style.RESET_ALL)
 
-                liability = Transaction(
+                liability = Liability(
                     id=str(search.id),
                     user_id=str(search.user_id),
                     name=search.name,
@@ -118,7 +118,7 @@ class Liabilities:
 
                     for record in search:
                         
-                        liability = Transaction(
+                        liability = Liability(
                             id=str(record.id),
                             user_id=str(record.user_id),
                             name=record.name,
@@ -208,8 +208,9 @@ class Liabilities:
             try:
 
                 sql = (
-                    delete(table_liabilities)
+                    update(table_liabilities)
                     .where((table_liabilities.id == id) & (table_liabilities.user_id == user_id))
+                    .values(deleted_at=datetime.now())
                 )
 
                 self.parent.session.execute(sql)
@@ -222,7 +223,6 @@ class Liabilities:
             
             except Exception as e:
 
-                logging.error(str(e.orig))
                 print(traceback.format_exc())
                 print(Fore.RED + Style.BRIGHT + "Error deleting liability!" + Style.RESET_ALL)
 

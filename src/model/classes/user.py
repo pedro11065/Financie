@@ -61,7 +61,7 @@ class User(UserMixin):
             password_hash=bcrypt.hashpw(self.password_hash.encode(), bcrypt.gensalt()).decode(),
             birthday=self.birthday,
             lgpd_consent=True,
-            created_at=datetime.now(),
+            created_at=None,
             updated_at=datetime.now(),
             deleted_at=None
         )

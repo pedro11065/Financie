@@ -34,7 +34,7 @@ class Transaction_service:
 
             #-----------------------------------------------------------------------
 
-
+                
             
             #-----------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ class Transaction_service:
                     # Caso 3: Pagamento por um ativo
                     elif self.liability_id == None and self.asset_id == None and self.request["item"] == True: # Saldo = Saldo - valor // Novo ativo
                         
-                        asset_obj = Asset(name=self.equest["name"], 
+                        asset_obj = Asset(name=self.request["name"], 
                             description=self.request["description"], 
                             category=self.request["category"],
                             status=self.request["status"],
@@ -86,19 +86,19 @@ class Transaction_service:
                 elif self.request["transaction_type"] == "receivement":
 
                     # Caso 1: Renda direta (salário, dividendos, etc.)  
-                    if self.asset_id == None and self.liability_id == None: # Saldo = valor + saldo
+                    if self.asset_id == None and self.liability_id == None and self.request["item"] == False: # Saldo = valor + saldo
             
                         self.db.users.update.balance(self.user_id, self.request["amount"], "sum")
                         
 
                     # Caso 2: Renda de um ativo (aluguel, retorno de investimento, etc.)          
-                    elif self.asset_id != None and self.liability_id == None: # Saldo = valor + saldo
+                    elif self.asset_id != None and self.liability_id == None and self.request["item"] == False: # Saldo = valor + saldo
 
                         self.db.users.update.balance(self.user_id, self.request["amount"], "sum") 
 
 
                     # Caso 3: Assumindo novo passivo (empréstimo recebido)  
-                    elif self.asset_id == None and self.liability_id != None: # Saldo = valor + saldo //Novo passivo
+                    elif self.asset_id == None and self.liability_id == None and self.request["item"] == True: # Saldo = valor + saldo //Novo passivo
 
                         liability_obj = Liability(name=self.request["name"], 
                             description=self.request["description"], 
@@ -112,15 +112,15 @@ class Transaction_service:
                         
                         self.request["liability_id"] = liability_obj.id
 
+                        if self.db.liabilities.create.liability(liability_obj):
+                            self.db.users.update.balance(self.user_id, self.request["amount"], "sum")
                         
-
-                        self.db.users.update.balance(self.user_id, self.request["amount"], "sum")
-                        self.db.liability.create.liability(liability_obj)
 
 
                     # Caso 4: Ativo vendido com transferência de passivo
                     elif self.asset_id != None and self.liability_id != None: # Saldo = valor + saldo // ativo por passivo
                         None
+
 
 
                 # # TIPO DE TRANSAÇÃO: TRANSFERÊNCIA
@@ -129,34 +129,37 @@ class Transaction_service:
                 #     # ---
                 #     None
 
+                if self.request["transaction_type"] == "payment" or self.request["transaction_type"] == "receivement":
 
-                transaction_obj = Transaction( #Indempendente do tipo de transação, uma transação vai ser criada/registrada
+                    transaction_obj = Transaction( #Indempendente do tipo de transação, uma transação vai ser criada/registrada
 
-                    id=uuid.uuid4(),
+                        id=uuid.uuid4(),
 
-                    user_id=self.payload[1]["id"],
+                        user_id=self.payload[1]["id"],
 
-                    asset_id=self.request["asset_id"],
-                    liability_id=self.request["liability_id"],
+                        asset_id=self.request["asset_id"],
+                        liability_id=self.request["liability_id"],
 
-                    credit_card_id=self.request["credit_card_id"], 
-                    
-                    statement_id=self.request["statement_id"], 
+                        credit_card_id=self.request["credit_card_id"], 
+                        
+                        statement_id=self.request["statement_id"], 
 
-                    transaction_type=self.request["transaction_type"],
-                    payment_method=self.request["payment_method"],
-                    payment_status=self.request["payment_status"], 
-                    currency=self.request["currency"],
-                    amount=self.request["amount"],
+                        transaction_type=self.request["transaction_type"],
+                        payment_method=self.request["payment_method"],
+                        payment_status=self.request["payment_status"], 
+                        currency=self.request["currency"],
+                        amount=self.request["amount"],
 
-                    created_at=datetime.now(),
-                    updated_at=datetime.now())
-            
-                if self.db.transactions.create.transaction(transaction_obj):
-                    return {"status": True, "message":"Transaction created successfully!"}, 201
+                        created_at=datetime.now(),
+                        updated_at=datetime.now())
                 
+                    if self.db.transactions.create.transaction(transaction_obj):
+                        return {"status": True, "message":"Transaction created successfully!"}, 201
+                else: 
+                    return {"status": False, "message":"Invalid transaction type."}, 405 
             except:
-                None
+                print(traceback.format_exc()) ; return {"status": False, "message":"Internal server error."}, 500
+            
             return {"status": False, "message":"Internal server error."}, 500
             
         return {"status": False, "message":self.payload[1]["message"]}, 405 
@@ -208,7 +211,6 @@ class Transaction_service:
                         transactions[i] = transaction.__dict__
 
                     return {"status": True, "data": transactions}, 200
-
 
                 return {"status": False, "message":"Transaction not finded."}, 404    
 

@@ -209,8 +209,9 @@ class Assets:
             try:
 
                 sql = (
-                    delete(table_assets)
+                    update(table_assets)
                     .where((table_assets.id == id) & (table_assets.user_id == user_id))
+                    .values(deleted_at=datetime.datetime.now())
                 )
 
                 self.parent.session.execute(sql)
