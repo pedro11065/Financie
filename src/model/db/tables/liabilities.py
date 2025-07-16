@@ -4,7 +4,8 @@ from sqlalchemy.exc import SQLAlchemyError  # Import para capturar erros do SQLA
 from sqlalchemy import update
 from sqlalchemy import delete
 
-from colorama import Fore, Style
+from src.config.colors import *
+from src.config.methods import *
 
 import logging, traceback,datetime
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
@@ -28,8 +29,9 @@ class Liabilities:
 
 
 # ==============================================================================
+#region CREATE
 
-    class Create:
+    class Create: 
 
         def __init__(self, parent):        
             self.parent = parent
@@ -59,6 +61,7 @@ class Liabilities:
 
 
 # ==============================================================================
+#region SEARCH
 
     class Search:
         
@@ -73,9 +76,14 @@ class Liabilities:
                 filter_data = {'user_id': user_id, 'id': id}
                 filter_data = {key: value for (key, value) in filter_data.items() if value}
 
-                search = self.parent.session.query(table_liabilities).filter_by(**filter_data).first()
+                search = (
+                    self.parent.session.query(table_liabilities)
+                    .filter_by(**filter_data)
+                    .filter(table_liabilities.deleted_at.isnot(None))
+                    .first()
+                )
 
-                print(Fore.GREEN + Style.BRIGHT + "Liability search by id ended successfully!" + Style.RESET_ALL)
+                print(green("Liability search by id ended successfully!"))
 
                 liability = Liability(
                     id=str(search.id),
@@ -97,7 +105,7 @@ class Liabilities:
 
                 logging.error(str(e))
                 print(traceback.format_exc())
-                print(Fore.RED + Style.BRIGHT + "Error reading liability!" + Style.RESET_ALL)
+                print(red("Error reading liability!"))
 
                 return False
             
@@ -109,10 +117,10 @@ class Liabilities:
             try:
                 search = self.parent.session.query(table_liabilities).filter_by(user_id=user_id).all()
 
-                print(Fore.GREEN + Style.BRIGHT + "Liability search by user id ended successfully!" + Style.RESET_ALL)
+                print(green("Liability search by user id ended successfully!"))
 
                 if search:  
-                    print(Fore.GREEN + Style.BRIGHT + f"{len(search)} Liability(s) founded!" + Style.RESET_ALL)
+                    print(green(f"{len(search)} Liability(s) founded!"))
 
                     liabilities = []
 
@@ -135,13 +143,13 @@ class Liabilities:
                     return liabilities 
 
                 else:
-                    print(Fore.RED + Style.BRIGHT + "Liability not founded." + Style.RESET_ALL)
+                    print(red("Liability not founded."))
                     return []  
 
             except Exception as e:
                 logging.error(str(e))
                 print(traceback.format_exc())
-                print(Fore.RED + Style.BRIGHT + "Error reading or searching liability!" + Style.RESET_ALL)
+                print(red("Error reading or searching liability!"))
                 return False
 
             finally:
@@ -150,6 +158,7 @@ class Liabilities:
 
 
 # ==============================================================================
+#region UPDATE
 
     class Update:
 
@@ -178,15 +187,14 @@ class Liabilities:
 
                 self.parent.session.commit()
 
-                print(Fore.GREEN + Style.BRIGHT + f"Liability {column} updated successfully!" + Style.RESET_ALL)
+                print(green(f"Liability {column} updated successfully!"))
 
                 return True
 
             except SQLAlchemyError as e:
                 
-                logging.error(str(e))
                 print(traceback.format_exc())
-                print(Fore.RED + Style.BRIGHT + "Error updating liability!" + Style.RESET_ALL)
+                print(red("Error updating liability!"))
                 print(e)
 
                 return False
@@ -197,6 +205,7 @@ class Liabilities:
 
 
 # ==============================================================================
+#region DELETE
 
     class Delete:
 
@@ -206,25 +215,26 @@ class Liabilities:
         def liability(self, user_id, id):
 
             try:
-
                 sql = (
                     update(table_liabilities)
                     .where((table_liabilities.id == id) & (table_liabilities.user_id == user_id))
                     .values(deleted_at=datetime.now())
                 )
 
-                self.parent.session.execute(sql)
+                result = self.parent.session.execute(sql)
                 self.parent.session.commit()
 
+                if result.rowcount > 0:
+                    print(green("Liability deleted successfully!"))
+                    return True
 
-                print(Fore.GREEN + Style.BRIGHT + "Liability deleted successfully!" + Style.RESET_ALL)
-
-                return True
+                print(red("Liability not found or not deleted."))
+                return False
             
             except Exception as e:
 
                 print(traceback.format_exc())
-                print(Fore.RED + Style.BRIGHT + "Error deleting liability!" + Style.RESET_ALL)
+                print(red("Error deleting liability!"))
 
                 return False
             

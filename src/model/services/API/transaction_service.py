@@ -41,7 +41,12 @@ class Transaction_service:
             #O ativo ou passivo vai ser selecionado no front -> id dele
 
             try:
-                # TIPO DE TRANSAÇÃO: SAÍDA (Dinheiro saindo)
+
+        #region SAÍDA
+        #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ============================== TIPO DE TRANSAÇÃO: SAÍDA (Dinheiro saindo) ==========================================================================================
+        #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
                 if self.request["transaction_type"] == "payment":
 
 
@@ -56,7 +61,7 @@ class Transaction_service:
                     # Por enquanto sem sistema de parcelamento
                         
                         self.db.users.update.balance(self.user_id, self.request["amount"], "deduct")
-                        self.db.liabilities.delete.liability(self.user_id, self.asset_id,)
+                        self.db.liabilities.delete.liability(self.user_id, self.liability_id,)
 
 
                     # Caso 3: Pagamento por um ativo
@@ -81,8 +86,12 @@ class Transaction_service:
                     # elif request["liability_id"] != "" and request["asset_id"] != "":
                         #None
 
+        #region ENTRADA
+        #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        #========================== TIPO DE TRANSAÇÃO: ENTRADA (Dinheiro entrando) ============================================================================
+        #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-                # TIPO DE TRANSAÇÃO: ENTRADA (Dinheiro entrando)
+
                 elif self.request["transaction_type"] == "receivement":
 
                     # Caso 1: Renda direta (salário, dividendos, etc.)  
@@ -122,12 +131,21 @@ class Transaction_service:
                         None
 
 
+        #region TRANSFERÊNCIA
+        #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # ============================ TIPO DE TRANSAÇÃO: TRANSFERÊNCIA ======================================================================================================
+        #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-                # # TIPO DE TRANSAÇÃO: TRANSFERÊNCIA
                 # elif request["transaction_type"] == "transfer":
                 #     # Caso 1: Transferência entre contas ou ativos
                 #     # ---
                 #     None
+
+
+        #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        #region TRANSAÇÃO
+        #---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
                 if self.request["transaction_type"] == "payment" or self.request["transaction_type"] == "receivement":
 

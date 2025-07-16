@@ -58,7 +58,7 @@ class Liability_service:
 
                 if id:
                     
-                    liability = self.db.transactions.search.by_id(user_id, id)
+                    liability = self.db.liabilities.search.by_id(user_id, id)
 
                 if liability:
 
@@ -76,7 +76,7 @@ class Liability_service:
 
             if type == "user":
 
-                liabilities = self.db.transactions.search.by_user_id(user_id)
+                liabilities = self.db.liabilities.search.by_user_id(user_id)
 
                 if liabilities:
 
@@ -111,7 +111,7 @@ class Liability_service:
 
             if column in columns:
 
-                if self.db.transactions.update.liability(user_id, liability_id, column, value):
+                if self.db.liabilities.update.liability(user_id, liability_id, column, value):
                     return {"status": True, "message":"liability updated successfully!"}, 201
                 
                 return {"status": False, "message":"Liability not finded."}, 500
@@ -133,7 +133,7 @@ class Liability_service:
             user_id = self.payload[1]["id"] 
             liability_id = request['id'] 
 
-            if self.db.transactions.delete.liability(user_id, liability_id):
+            if self.db.liabilities.delete.liability(user_id, liability_id):
                 return {"status": True, "message":"Liability deleted successfully!"}, 201
             else:
                 return {"status": False, "message":"Liability not finded."}, 500
