@@ -4,14 +4,15 @@ from sqlalchemy.exc import SQLAlchemyError  # Import para capturar erros do SQLA
 from sqlalchemy import update
 from sqlalchemy import delete
 
-from colorama import Fore, Style
-
 import logging, traceback, datetime
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 from src.model.classes.transaction import * 
 from src.model.db.DbConnect import Db_connect
 from src.model.classes.transaction import table_transactions
+
+from src.config.colors import *
+from src.config.methods import *
 
 class Transactions:
 

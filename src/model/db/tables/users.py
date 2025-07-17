@@ -4,7 +4,8 @@ from sqlalchemy.exc import SQLAlchemyError  # Import para capturar erros do SQLA
 from sqlalchemy import update
 from sqlalchemy import delete
 
-from colorama import Fore, Style
+from src.config.colors import *
+from src.config.methods import *
 
 import logging, traceback
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
