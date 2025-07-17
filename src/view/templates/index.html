@@ -13,7 +13,54 @@
 </head>
 
 <body>
-    <a>OLÁ MUNDO</a>
-    <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+    <header>
+    
+        <img class="logo" src="{{ url_for('static', filename='images/financie_name.png') }}" alt="Imagem do Cabeçalho">
+     
+
+        <section class="header-links">
+
+            <a href="/user/register" class="link">Serviços</a>
+            <a href="/user/login" class="link">Soluções</a>     
+            <a href="/user/login" class="link">Preços</a>  
+            <a href="/user/login" class="link">Help Center</a>      
+
+        </section>
+        
+        
+        <section class="header-login">
+            {% if current_user.is_authenticated %}
+                <a href="/dashboard/user" class="dashboard">Dashboard</a>
+                <a href="/user/logout" class="logout">Logout</a>
+            {% else %}
+                <a href="/user/register" class="register">Criar conta</a>
+                <a href="/user/login" class="login">Login</a>           
+            {% endif %}
+        </section>
+
+    </header>
+
+    <main>
+
+        <article-hero>
+            <section-hero>
+                <h1>Simplifique sua gestão financeira</h1>
+                <h2>Organize suas finanças, acompanhe seu fluxo de caixa e tome decisões de forma inteligente e segura.</h2>      
+                <a class="box-hero" href="#features"><h3>Experimente grátis por 7 dias!</h3></a>
+            </section-hero>
+            <section-hero>
+            </section-hero>
+        </article-hero>
+
+        <!--<hero-degrade>
+            <h4>O Financie é a solução ideal para pequenos empreendedores e pessoas físicas que desejam abandonar planilhas e cadernos.</h4>
+        </hero-degrade>-->
+
+        
+    </main>
+
+
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>
