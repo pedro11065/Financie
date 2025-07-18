@@ -167,26 +167,27 @@ header{
 
 
 h1{
-    font-family: inter;
-    font-size: 2.7rem;
+    font-family: "Archivo", sans-serif;
+    font-size: 4rem;
     font-weight: 600;
     color: white;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    line-height: 5rem;
 }
 
 h2{
     font-family: inter;
-    font-size: 1rem;
+    font-size: 1.4rem;
     font-weight: 400;
     color: white;
-    line-height: 1.5rem;
+    line-height: 2rem;
     
     padding-right: 5rem;
 }
 
 h3{
     font-family: inter;
-    font-size: 1rem;
+    font-size: 1.2rem;
     font-weight: 400;
     color: #2971d9;
 }
@@ -200,36 +201,74 @@ h3_1{
 }
 
 h4{
-    text-align: center;
+    text-align: left;
     font-family: inter;
     font-size:1.3rem;
     font-weight: 400;
-    color: rgb(255, 255, 255);
+    color: #6e7787;
+
+    padding-bottom: 1.5rem;
 }
 
 
 h5{
-    text-align: center;
-    font-family: inter;
-    font-size:1.5rem;
-    font-weight: 300;
-    color: rgb(255, 255, 255);
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: #323842;
+
+    padding-bottom: 1.4rem;
 }
 
+h5_1{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: #43a473;
+
+    padding-bottom: 1.4rem;
+}
+
+
+h5_2{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: #efb034;
+
+    padding-bottom: 1.4rem;
+}
+
+
+h5_3{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3.2rem;
+    font-weight: 700;
+    color: #2971d9;
+
+    padding-bottom: 1.4rem;
+}
+
+
 h6{
-    text-align: center;
+    text-align: left;
     font-family: inter;
-    font-size:1.3rem;
-    font-weight: 300;
-    color: rgb(255, 255, 255);
+    font-size:1.2rem;
+    font-weight: 400;
+    line-height: 1.8rem;
+    color: #6e7787;
 }
 
 h7{
     text-align: center;
     font-family: inter;
-    font-size:3rem;
-    font-weight: 500;
-    color: rgb(0, 0, 0);
+    font-size:1rem;
+    font-weight: 400;
+    color: #43a473;
 }
 
 h8{
@@ -295,7 +334,7 @@ article-hero {
     background-repeat: repeat-y;
     background-size:100%; 
     animation: moveBackground 16s linear infinite;
-    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 138px, rgba(0, 0, 0, 0.22) 0px 15px 112px;
     
 }
 
@@ -324,14 +363,13 @@ section-hero{
     align-items: center;
     justify-content: center;
     background-color: white;
-    width: 18rem;
-    height: 2.8rem;
+    width: 20rem;
+    height: 3.7rem;
     border-radius: 0.3rem;
-    margin-top: 2rem;
+    margin-top: 4rem;
     cursor: pointer;
     text-decoration: none;
     transition: background-color 0.3s ease, color 0.3s ease;
-    box-shadow: rgba(0, 0, 0, 0.30) 0px 3px 6px;
 }
 
 .box-hero:hover{
@@ -353,4 +391,41 @@ hero-degrade{
     height: 30vh;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
     
+}
+
+
+/*--------------------------------------------*/
+
+
+
+features{
+    display:flex;
+    flex-direction: column;    
+
+    margin-left: 4rem;
+    margin-right: 4rem;
+}
+
+feature{
+    display:flex;
+    flex-direction: row;   
+}
+
+feature-photo{
+    display:flex;
+    width: 50vw;
+    height: 60vh;
+    background-color: #22CCB2;
+}
+
+feature-container{
+    display:flex;
+    justify-content: center;
+    width: 50vw;
+    height: 60vh;
+
+    
+    padding: 7rem;
+    flex-direction: column;  
+    background-color: white;
 }
