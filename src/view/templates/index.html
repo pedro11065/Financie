@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Beesiness</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/Beesiness_logo.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='images/financie_logo.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
 </head>
 
 <body>
@@ -42,16 +43,17 @@
 
     </header>
 
+    <div >
+        Logo, navigation, etc.
+      </div>
+
     <main>
 
-        <article-hero>
+        <article-hero class="header finisher-header" style="width: 100vw; height: 100vh;">
             <section-hero>
-                <h1>Simplifique sua gestão financeira</h1>
-                <h2>Organize suas finanças, acompanhe seu fluxo de caixa e tome decisões de forma inteligente e segura.</h2>      
+                <h1 type="text" >Simplifique sua <br><h1_1>gestão financeira</h1_1></h1>
+                <h2>Organize suas finanças, acompanhe seu fluxo de caixa e <br>tome decisões de forma inteligente e segura.</h2>      
                 <a class="box-hero" href="#features"><h3>Experimente grátis por 7 dias!</h3></a>
-            </section-hero>
-            <section-hero>
-            </section-hero>
         </article-hero>
 
         <!--<hero-degrade>
@@ -109,5 +111,47 @@
 
 
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script src="{{ url_for('static', filename='js/finisher-header.es5.min.js') }}"></script>
+
+<script type="text/javascript">
+    new FinisherHeader({
+      "count": 10,
+      "size": {
+        "min": 266,
+        "max": 945,
+        "pulse": 1.8
+      },
+      "speed": {
+        "x": {
+          "min": 0.1,
+          "max": 0.6
+        },
+        "y": {
+          "min": 0.1,
+          "max": 0.6
+        }
+      },
+      "colors": {
+        "background": "#00c5ff",
+        "particles": [
+          "#fff300",
+          "#06ff00",
+          "#2437e8",
+          "#118686"
+        ]
+      },
+      "blending": "overlay",
+      "opacity": {
+        "center": 0.3,
+        "edge": 0.01
+      },
+      "skew": 0,
+      "shapes": [
+        "c"
+      ]
+    });
+    </script>
+
+    
 </body>
 </html>
