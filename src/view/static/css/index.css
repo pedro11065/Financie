@@ -198,7 +198,7 @@ h2{
 h3{
     font-family: inter;
     font-size: 0.9rem;
-    font-weight: 400;
+    font-weight: 600;
     color: #1d75f0;
 }
 
@@ -339,27 +339,9 @@ article-hero {
     padding-right: 10vw;
     padding-left: 10vw;
     
-    /*background-image: url('/static/images/index/abelha_background_pc.png');*/
-    background: linear-gradient(-45deg, #03354d, #0d48a0, #0a97ca, #23d5ab, #08fdab, #10c93e, #68db09, #bbe012, #d2e012, #f0d90c, #c5b100);
-    background-repeat: repeat-y;
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 138px, rgba(0, 0, 0, 0.22) 0px 15px 112px;
     
 }
-
-@keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
-}
-
 
 section-hero{
     display: flex;
