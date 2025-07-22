@@ -106,6 +106,12 @@
 
         </features>
 
+        <slide_features>
+
+          
+        </slide_features>
+
+
         
     </main>
 
@@ -114,44 +120,42 @@
 <script src="{{ url_for('static', filename='js/finisher-header.es5.min.js') }}"></script>
 
 <script type="text/javascript">
-    new FinisherHeader({
-      "count": 10,
-      "size": {
-        "min": 266,
-        "max": 945,
-        "pulse": 1.8
+  new FinisherHeader({
+    "count": 6,
+    "size": {
+      "min": 1100,
+      "max": 1300,
+      "pulse": 0
+    },
+    "speed": {
+      "x": {
+        "min": 0.1,
+        "max": 0.3
       },
-      "speed": {
-        "x": {
-          "min": 0.1,
-          "max": 0.6
-        },
-        "y": {
-          "min": 0.1,
-          "max": 0.6
-        }
-      },
-      "colors": {
-        "background": "#00c5ff",
-        "particles": [
-          "#fff300",
-          "#06ff00",
-          "#2437e8",
-          "#118686"
-        ]
-      },
-      "blending": "overlay",
-      "opacity": {
-        "center": 0.3,
-        "edge": 0.01
-      },
-      "skew": 0,
-      "shapes": [
-        "c"
+      "y": {
+        "min": 0.1,
+        "max": 0.3
+      }
+    },
+    "colors": {
+      "background": "#47008a",
+      "particles": [
+        "#00aaea",
+        "#13d100",
+        "#0036ff"
       ]
-    });
-    </script>
-
+    },
+    "blending": "overlay",
+    "opacity": {
+      "center": 1,
+      "edge": 0.1
+    },
+    "skew": 0,
+    "shapes": [
+      "c"
+    ]
+  });
+  </script>
     
 </body>
 </html>
