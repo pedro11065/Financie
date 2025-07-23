@@ -406,13 +406,17 @@ features{
 feature{
     display:flex;
     flex-direction: row;   
+    margin-top: 4rem;
 }
 
-feature-photo{
+feature-photo-container{
     display:flex;
+    justify-content: center;
     width: 50vw;
     height: 60vh;
-    background-color: #22CCB2;
+
+    padding-left: 5vw;
+    padding-right: 5vw;
 }
 
 feature-container{
@@ -421,10 +425,95 @@ feature-container{
     width: 50vw;
     height: 60vh;
 
-    
-    padding: 7rem;
-    padding-left: 5rem;
-    padding-right: 5rem;
+
+    padding-left: 5vw;
+    padding-right: 5vw;
     flex-direction: column;  
-    background-color: white;
+}
+
+img.feature-photo{
+    width: 100%;
+    height: auto;
+    border-radius: 2rem;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+
+}
+
+
+.feature_btn_1{
+    background-color: #00c462;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8.3rem;
+    height: 2.4rem;
+    text-decoration: none;
+    color: white;
+    border-radius: 0.3rem;
+
+    text-align: center;
+    font-family: inter;
+    font-size:0.9rem;
+    font-weight: 400;
+
+    margin-top: 2rem;
+    
+
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.feature_btn_1:hover{
+    background-color: #006405;
+    color: #ffffff;
+}
+
+.feature_btn_2{
+    background-color: #efb034;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8.3rem;
+    height: 2.4rem;
+    text-decoration: none;
+    color: white;
+    border-radius: 0.3rem;
+
+    text-align: center;
+    font-family: inter;
+    font-size:0.9rem;
+    font-weight: 400;
+
+    margin-top: 2rem;
+    
+
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.feature_btn_2:hover{
+    background-color: #644d00;
+    color: #ffffff;
+}
+
+.feature_btn_3{
+    background-color: #2971d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 8.3rem;
+    height: 2.4rem;
+    text-decoration: none;
+    color: white;
+    border-radius: 0.3rem;
+
+    text-align: center;
+    font-family: inter;
+    font-size:0.9rem;
+    font-weight: 400;
+
+    margin-top: 2rem;
+    
+
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.feature_btn_3:hover{
+    background-color: #002f70;
+    color: #ffffff;
 }
