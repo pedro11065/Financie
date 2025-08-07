@@ -410,6 +410,68 @@ hero-degrade{
 
 /*--------------------------------------------*/
 
+h4{
+    text-align: left;
+    font-family: inter;
+    font-size:1.3vw;
+    font-weight: 400;
+    color: #6e7787;
+
+    padding-bottom: 1.5rem;
+}
+
+
+h5{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3vw;
+    font-weight: 700;
+    color: #323842;
+
+    padding-bottom: 1.4rem;
+}
+
+h5_1{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3vw;
+    font-weight: 700;
+    color: #00c462;
+
+    padding-bottom: 1.4rem;
+}
+
+
+h5_2{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3vw;
+    font-weight: 700;
+    color: #efb034;
+
+    padding-bottom: 1.4rem;
+}
+
+
+h5_3{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3vw;
+    font-weight: 700;
+    color: #2971d9;
+
+    padding-bottom: 1.4rem;
+}
+
+
+h6{
+    text-align: left;
+    font-family: inter;
+    font-size:1.2vw;
+    font-weight: 400;
+    line-height: 1.8rem;
+    color: #6e7787;
+}
 
 
 features{
@@ -440,9 +502,77 @@ feature-container{
     height: 60vh;
 
     
-    padding: 7rem;
+    padding: 7,0 rem;
     padding-left: 5rem;
     padding-right: 5rem;
     flex-direction: column;  
     background-color: white;
+}
+
+.box-feature-1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00c462;
+    width: 10vw;
+    height: 6vh;
+    border-radius: 0.4rem;
+    margin-top: 2rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    h6{color: white}
+}
+
+.box-feature-1:hover{
+    background-color:  #35815BFF;
+    h6{color: white}
+    
+}
+
+
+.box-feature-2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color:  #EFB034FF;
+    width: 10vw;
+    height: 6vh;
+    border-radius: 0.4rem;
+    margin-top: 2rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    h6{color: white}
+}
+
+.box-feature-2:hover{
+    background-color:  #D29211FF;
+    h6{color: white}
+    
+}
+
+
+.box-feature-3{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #2971D9FF;
+    width: 10vw;
+    height: 6vh;
+    border-radius: 0.4rem;
+    margin-top: 2rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    h6{color: white}
+}
+
+.box-feature-3:hover{
+    background-color:   #1F5DB2FF;
+    h6{color: white}
+    
 }

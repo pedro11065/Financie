@@ -6,7 +6,7 @@ from src.model.auth.userloader import load_user  # Import the refactored functio
 app = create_app()
 CORS(app)  # O CORS é um sistema de segurança das requisições HTTP que verifica o método da API antes de chamá-lo.
 app.app_context().push()
-
+                                                                                                                                                                                     
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'auth_user_api.login' 
