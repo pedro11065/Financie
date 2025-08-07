@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Beesiness</title>
+    <title>Financie</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
-    <link rel="icon" href="{{ url_for('static', filename='images/financie_logo.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo/financie_logo.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet"/>
@@ -18,7 +18,7 @@
 
     <header>
     
-        <img class="logo" src="{{ url_for('static', filename='images/financie_name.png') }}" alt="Imagem do Cabeçalho">
+        <img class="logo" src="{{ url_for('static', filename='images/logo/financie_name.png') }}" alt="Imagem do Cabeçalho">
      
 
         <section class="header-links">
@@ -49,10 +49,10 @@
 
     <main>
 
-        <article-hero class="header finisher-header" style="width: 100vw; height: 100vh;">
+        <article-hero class="header finisher-header">
             <section-hero>
                 <h1 type="text" >Simplifique sua <br><h1_1>gestão financeira</h1_1></h1>
-                <h2>Organize suas finanças, acompanhe seu fluxo de caixa e <br>tome decisões de forma inteligente e segura.</h2>      
+                <h2>Gerencie suas finanças com facilidade e segurança,<br>tome decisões de forma inteligente e lucrativa.</h2>      
                 <a class="box-hero" href="#features"><h3>Experimente grátis por 7 dias!</h3></a>
         </article-hero>
 
@@ -64,9 +64,9 @@
 
             <feature>      
                 
-                <feature-photo>
-                    
-                </feature-photo>
+                <feature-photo-container>
+                  <img class="feature-photo" src="{{ url_for('static', filename='images/dashboard/feature_1.png') }}" alt="Imagem do feature 1">
+                </feature-photo-container>
 
                 <feature-container>
                     <h4>VOCÊ PODE</h4>
@@ -86,17 +86,17 @@
                     <a class="box-feature-2"><h6>Comece já!</h6></a>
                 </feature-container>
 
-                <feature-photo>
+                <feature-photo-container>
                     
-                </feature-photo>
+                </feature-photo-container>
 
             </feature>
 
             <feature>      
 
-                <feature-photo>
-                    
-                </feature-photo>
+                <feature-photo-container>
+                  <img class="feature-photo" src="{{ url_for('static', filename='images/dashboard/feature_3.png') }}" alt="Imagem do feature 3">
+                </feature-photo-container>
 
                 <feature-container>
                     <h4>VOCÊ PODE</h4>
