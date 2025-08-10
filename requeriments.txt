@@ -1,0 +1,9 @@
+flask
+flask_login
+flask_cors
+flask_caching
+psycopg2
+requests
+colorama
+bcrypt
+sqlalchemy

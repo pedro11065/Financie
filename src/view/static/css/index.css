@@ -210,58 +210,6 @@ h3_1{
     color: #EDC805;
 }
 
-h4{
-    text-align: left;
-    font-family: inter;
-    font-size:1.3vw;
-    font-weight: 400;
-    color: #6e7787;
-
-    padding-bottom: 1.5rem;
-}
-
-
-h5{
-    font-family: "Archivo", sans-serif;
-    text-align: left;
-    font-size: 3vw;
-    font-weight: 700;
-    color: #323842;
-
-    padding-bottom: 1.4rem;
-}
-
-h5_1{
-    font-family: "Archivo", sans-serif;
-    text-align: left;
-    font-size: 3vw;
-    font-weight: 700;
-    color: #00c462;
-
-    padding-bottom: 1.4rem;
-}
-
-
-h5_2{
-    font-family: "Archivo", sans-serif;
-    text-align: left;
-    font-size: 3vw;
-    font-weight: 700;
-    color: #efb034;
-
-    padding-bottom: 1.4rem;
-}
-
-
-h5_3{
-    font-family: "Archivo", sans-serif;
-    text-align: left;
-    font-size: 3vw;
-    font-weight: 700;
-    color: #2971d9;
-
-    padding-bottom: 1.4rem;
-}
 
 
 h6{
@@ -456,6 +404,64 @@ h6{
 }
 
 
+/*--------------------------------*/
+
+
+ h4{
+    text-align: left;
+    font-family: inter;
+    font-size:1.3vw;
+    font-weight: 400;
+    color: #6e7787;
+
+    padding-bottom: 1.5rem;
+}
+
+
+h5{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3vw;
+    font-weight: 700;
+    color: #323842;
+
+    padding-bottom: 1.4rem;
+}
+
+h5_1{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3vw;
+    font-weight: 700;
+    color: #00c462;
+
+    padding-bottom: 1.4rem;
+}
+
+
+h5_2{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3vw;
+    font-weight: 700;
+    color: #efb034;
+
+    padding-bottom: 1.4rem;
+}
+
+
+h5_3{
+    font-family: "Archivo", sans-serif;
+    text-align: left;
+    font-size: 3vw;
+    font-weight: 700;
+    color: #2971d9;
+
+    padding-bottom: 1.4rem;
+}
+
+
+
 features{
     display:flex;
     flex-direction: column;    
@@ -479,6 +485,10 @@ feature-photo-container{
 
     padding-left: 5vw;
     padding-right: 5vw;
+}
+
+.feature-photo{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 feature-container{
@@ -561,4 +571,23 @@ feature-container{
     background-color:   #1F5DB2FF;
     h6{color: white}
     
+}
+
+
+
+
+slide_features{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+}
+
+slide_feature_title{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
 }
