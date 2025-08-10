@@ -56,63 +56,84 @@
                 <a class="box-hero" href="#features"><h3>Experimente grátis por 7 dias!</h3></a>
         </article-hero>
 
-        <!--<hero-degrade>
-            <h4>O Financie é a solução ideal para pequenos empreendedores e pessoas físicas que desejam abandonar planilhas e cadernos.</h4>
-        </hero-degrade>-->
+        <article class="features">
 
-        <features>
-
-            <feature>      
+            <section class="feature">      
                 
-                <feature-photo-container>
+                <container class="feature-photo-container">
                   <img class="feature-photo" src="{{ url_for('static', filename='images/index/features/feature_1.png') }}" alt="Imagem do feature 1">
-                </feature-photo-container>
+                </container>
 
-                <feature-container>
+                <container class="feature-container">
                     <h4>VOCÊ PODE</h4>
                     <h5><h5_1>Gerir</h5_1> suas transações</h5>
                     <h6>Registre receitas e despesas com poucos cliques. Edite, pesquise ou exclua transações facilmente, mantendo suas finanças sempre organizadas.</h6>
                     <a class="box-feature-1"><h6>Comece já!</h6></a>
-                </feature-container>
+                </container>
 
-            </feature>
+            </section>
 
-            <feature>      
+            <section class="feature">      
 
-                <feature-container>
+                <container class="feature-container">
                     <h4>VOCÊ PODE</h4>
                     <h5><h5_2>Acompanhar</h5_2> suas finanças</h5>
                     <h6>Monitore seu fluxo de caixa, Veja gráficos e insights de receitas e despesas, filtre por períodos (como mês ou trimestre) e muito mais!</h6>
                     <a class="box-feature-2"><h6>Comece já!</h6></a>
-                </feature-container>
+                </container>
 
-                <feature-photo-container>
+                <container class="feature-photo-container">
                     
-                </feature-photo-container>
+                </container>
 
-            </feature>
+            </section>
 
-            <feature>      
+            <section class="feature">      
 
-                <feature-photo-container>
+                <container class="feature-photo-container">
                   <img class="feature-photo" src="{{ url_for('static', filename='images/index/features/feature_3.png') }}" alt="Imagem do feature 3">
-                </feature-photo-container>
+                </container>
 
-                <feature-container>
+                <container class="feature-container">
                     <h4>VOCÊ PODE</h4>
                     <h5><h5_3>Economizar</h5_3> dinheiro</h5>
                     <h6>Detecte padrões de gastos excessivos, permitindo cortar custos supérfluos e direcionar seu dinheiro para o que realmente importa.</h6>
                     <a class="box-feature-3"><h6>Comece já!</h6></a>
-                </feature-container>
+                </container>
 
-            </feature>
+            </section>
 
-        </features>
+          </article>
 
-        <slide_features>
-          <slide_feature_title><h5_3>Simples,</h5_3>&nbsp;<h5_1>facil</h5_1>&nbsp;<h5>e</h5>&nbsp;<h5_2>rápido.</h5_2></slide_feature_title>
-        </slide_features>
+        <div class="attributes_title"><h5_3>Simples,</h5_3>&nbsp;<h5_1>facil</h5_1>&nbsp;<h5>e</h5>&nbsp;<h5_2>rápido.</h5_2></div>
 
+        <article class="attributes">
+
+          <container class="attribute"> 
+            <div class="attribute_title"><h7>Cadastro</h7><br><h7_1>simples</h7_1></div>
+            <div><h8>Comece em minutos: cadastre-se com e-mail, senha e CPF/CNPJ sem complicações.</h8></div>
+            <img class="attribute_icon" src="{{ url_for('static', filename='images/index/icons/form.png') }}" alt="icon form"></img>
+          </container>
+
+          <container class="attribute"> 
+            <div><h7>IA</h7><br><h7_1>integrada</h7_1></div>
+            <div><h8>IA a seu favor: receba dicas personalizadas e alertas em tempo real.</h8></div>
+            <img class="attribute_icon" src="{{ url_for('static', filename='images/index/icons/brain.png') }}" alt="icon brain"></img>
+          </container>
+
+          <container class="attribute"> 
+            <div><h7>Registro de</h7><br><h7_1>transações</h7_1></div>
+            <div><h8>Registre receitas e despesas em poucos cliques: valor, data, descrição e categoria e mais.</h8></div>
+            <img class="attribute_icon" src="{{ url_for('static', filename='images/index/icons/transaction.png') }}" alt="icon transaction"></img>
+          </container>
+
+          <container class="attribute"> 
+            <div><h7>Notificações</h7><br><h7_1>por email</h7_1></div>
+            <div><h8>Fique no controle: receba alertas por e-mail sobre contas próximas ao vencimento.</h8></div>
+            <img class="attribute_icon" src="{{ url_for('static', filename='images/index/icons/email.png') }}" alt="icon email"></img>
+          </container>
+
+        </article>
 
         
     </main>

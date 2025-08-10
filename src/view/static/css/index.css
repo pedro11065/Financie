@@ -461,23 +461,20 @@ h5_3{
 }
 
 
-
-features{
+.features{
     display:flex;
     flex-direction: column;    
 
-    margin-top: 4rem;
-    margin-left: 4rem;
-    margin-right: 4rem;
+    margin: 4rem;
 }
 
-feature{
+.feature{
     display:flex;
     flex-direction: row;   
     margin-top: 4rem;
 }
 
-feature-photo-container{
+.feature-photo-container{
     display:flex;
     justify-content: center;
     width: 50vw;
@@ -491,7 +488,7 @@ feature-photo-container{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-feature-container{
+.feature-container{
     display:flex;
     justify-content: center;
     width: 50vw;
@@ -562,7 +559,7 @@ feature-container{
     margin-top: 2rem;
     cursor: pointer;
     text-decoration: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color w0.3s ease, color 0.3s ease;
 
     h6{color: white}
 }
@@ -576,18 +573,73 @@ feature-container{
 
 
 
-slide_features{
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;
-    margin-top: 4rem;
-    margin-bottom: 4rem;
+h7{
+    font-family: "Archivo", sans-serif;
+    text-align: center;
+    font-size: 2vw;
+    font-weight: 700;
+    color: #323842;
+
+    padding-bottom: 1.4rem;
 }
 
-slide_feature_title{
+h7_1{
+    font-family: "Archivo", sans-serif;
+    text-align: center;
+    font-size: 2vw;
+    font-weight: 700;
+    color: #323842;
+
+
+    padding-bottom: 1.4rem;
+}
+
+h8{
+    font-family: "Archivo", sans-serif;
+    text-align:justify;
+    font-size: 1vw;
+    font-weight: 700;
+    color: #323842;
+    line-height: 1.8rem;
+    padding-bottom: 1.4rem;
+}
+
+
+
+.attributes_title{
     display:flex;
     align-items: center;
     justify-content: center;
     width: 100vw;
+    text-align: center;
+}
+
+.attributes{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: auto;
+    margin-top: 1rem;
+    padding-top: 2rem;
+    margin-bottom: 4rem;
+    padding: 3rem;
+    flex-direction: row;  
+}
+
+.attribute{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: auto;
+    margin-left: 4rem;
+    margin-right: 4rem;
+    flex-direction: column;  
+}
+
+.attribute_title{
+    display: flex;
+    align-items: center;
+    text-align: center;
 }
